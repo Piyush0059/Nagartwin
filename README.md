@@ -40,14 +40,7 @@ Its public-welfare success criteria for future versions should include more than
 
 Open `index.html` in a modern browser. The scenario calculations run locally. The public weather context requests data from Open-Meteo over the internet; if that request fails or the user is offline, the weather panel shows an unavailable state and no fake data are substituted. No API key or application server is used by this prototype.
 
-## GitHub Pages deployment
 
-This repository is already configured for GitHub Pages. The published page is linked above. For a fresh fork:
-
-1. Place `index.html` at the repository root.
-2. In **Settings → Pages**, select **Deploy from a branch**, branch `main`, folder `/(root)`, and save.
-3. Wait for the Pages build/deploy workflow in **Actions** to succeed.
-4. Open the URL listed in **Settings → Pages** and follow [TEST_CHECKLIST.md](TEST_CHECKLIST.md).
 
 ## Model overview
 
