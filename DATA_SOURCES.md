@@ -37,7 +37,7 @@ NagarTwin deliberately separates externally sourced reference context from ficti
 - **Reference coordinates:** 25.35° N, 85.12° E, matching the location coordinates displayed on the Patna District Administration page.
 - **Requested variables:** current model temperature, apparent temperature, relative humidity, precipitation and 10 m wind speed; daily maximum temperature, precipitation total and maximum precipitation probability for three days.
 - **Refresh behavior:** queried in the visitor's browser when the page loads and when they press Refresh. The site does not embed a particular day's weather values in the repository.
-- **Licence/terms:** review Open-Meteo's current terms and model-provider attribution requirements before redistribution or commercial use; the app links to the API documentation and terms.
+- **Licence/terms:** Open-Meteo says data obtained through the API is under CC BY 4.0 and attribution is required. The free API is for non-commercial use under its terms; check the current terms before reuse or commercial use. (https://open-meteo.com/en/terms)
 - **Use in NagarTwin:** weather context panel only, not scenario model input.
 - **Important:** modelled “current” conditions are not the same as a direct local weather-station observation. The feed is not an official India Meteorological Department alert or warning. For official warnings, use https://mausam.imd.gov.in/.
 
