@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d1726">
+<meta name="description" content="NagarTwin is a transparent urban future-scenario simulator for public-service access and emergency planning.">
+<title>NagarTwin — Future Scenario Engine</title>
+<style>
+:root {
+  --site-primary: #8de0cf;
+  --site-on-primary: #09221f;
+  --site-secondary: #182b43;
+  --site-on-secondary: #e9f2ff;
+  --site-background: #0d1726;
+  --site-on-background: #edf5ff;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  --bg: light-dark(#f4f7fb, #0d1726);
+  --panel: light-dark(#ffffff, #132238);
+  --panel-2: light-dark(#f4f7fc, #182b43);
+  --text: light-dark(#13243a, #edf5ff);
+  --muted: light-dark(#586b82, #9dafc6);
+  --line: light-dark(#d8e1ec, #293e59);
+  --mint: var(--site-primary);
+  --blue: #83b9ff;
+  --orange: #ffc06c;
+  --red: #ff8585;
+  --green: #7ae0ae;
+  --shadow: 0 18px 50px rgba(0,0,0,.12);
+  color-scheme: light dark;
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 var(--site-font-body); }
+button, input, select { font: inherit; }
+button, select, input { accent-color: var(--mint); }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+a { color: inherit; }
+#appRoot { min-height: 100vh; width: 100%; border-radius: 0; overflow: hidden; background-color: var(--site-background); color: var(--site-on-background); background-image: radial-gradient(ellipse at 88% 0%, rgba(78,126,186,.18), transparent 30%), radial-gradient(ellipse at 0% 20%, rgba(92,203,176,.10), transparent 25%); }
+.container { width: min(1320px, calc(100% - 48px)); margin: 0 auto; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 78px; border-bottom: 1px solid rgba(154,179,210,.15); }
+.brand { display:flex; align-items:center; gap:11px; text-decoration:none; min-width: 210px; }
+.brand-icon { width:38px; height:38px; display:grid; place-items:center; border-radius: calc(12px * var(--site-radius-scale)); color:var(--site-on-primary); background:var(--site-primary); font-weight:900; font-size:19px; }
+.brand-title { font-weight:850; letter-spacing:-.04em; font-size:17px; line-height:1.1; }
+.brand-sub { display:block; font-size:9px; text-transform:uppercase; letter-spacing:.16em; color:var(--muted); margin-top:5px; }
+.nav { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.nav a { color:var(--muted); text-decoration:none; padding:9px 12px; font-size:12px; border-radius:10px; }
+.nav a:hover { color:var(--text); background:rgba(255,255,255,.06); }
+.top-right { display:flex; align-items:center; gap:10px; }
+.badge { display:inline-flex; align-items:center; gap:7px; border:1px solid rgba(255,192,108,.35); color:#ffd398; background:rgba(255,192,108,.08); padding:6px 9px; border-radius:99px; font-size:10px; font-weight:750; letter-spacing:.06em; white-space:nowrap; }
+.badge .dot { width:6px; height:6px; background:var(--orange); border-radius:50%; }
+.btn { border:1px solid var(--line); color:var(--text); padding:10px 14px; border-radius:11px; background:var(--panel-2); font-weight:750; font-size:12px; transition:transform .15s ease, filter .15s ease; }
+.btn:hover { filter:brightness(1.09); transform:translateY(-1px); }
+.btn.primary { background:var(--site-primary); color:var(--site-on-primary); border-color:var(--site-primary); }
+.btn.ghost { background:transparent; }
+.btn.small { padding:7px 10px; font-size:11px; }
+.hero { padding:47px 0 30px; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(270px,.7fr); gap:35px; align-items:center; }
+.eyebrow { text-transform:uppercase; letter-spacing:.17em; font-size:10px; font-weight:850; color:var(--mint); display:flex; gap:9px; align-items:center; }
+.eyebrow:before { content:""; width:23px; height:1px; background:var(--mint); }
+h1,h2,h3,p { margin-top:0; }
+h1 { font-family:var(--site-font-heading); font-size:calc(clamp(36px,5.1vw,64px) * var(--site-heading-scale)); line-height:1.02; letter-spacing:-.065em; margin:15px 0 17px; max-width:780px; }
+h1 span { color:var(--mint); }
+.hero p { max-width:700px; font-size:15px; color:#afc0d5; line-height:1.75; }
+.hero-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:22px; }
+.hero-note { border:1px solid var(--line); background:linear-gradient(145deg, rgba(141,224,207,.08), rgba(131,185,255,.05)); padding:19px; border-radius:calc(19px * var(--site-radius-scale)); }
+.note-top { display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); }
+.live-icon { display:grid; place-items:center; width:37px; height:37px; border-radius:12px; background:rgba(141,224,207,.12); color:var(--mint); font-size:20px; }
+.hero-note h3 { font-size:16px; margin:14px 0 7px; letter-spacing:-.025em; }
+.hero-note p { font-size:12px; margin:0; }
+.note-rule { height:1px; background:var(--line); margin:17px 0; }
+.micro-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; }
+.micro-stat strong { display:block; font-size:18px; }
+.micro-stat span { color:var(--muted); font-size:9px; line-height:1.3; display:block; }
+.section-kicker { font-size:10px; color:var(--mint); text-transform:uppercase; font-weight:850; letter-spacing:.14em; }
+.section-title { font-size:calc(25px * var(--site-heading-scale)); line-height:1.16; letter-spacing:-.045em; margin:6px 0 7px; }
+.section-intro { font-size:12px; color:var(--muted); margin:0; max-width:720px; }
+.lab-head { display:flex; justify-content:space-between; gap:18px; align-items:flex-end; margin:23px 0 16px; }
+.lab-head-right { color:var(--muted); font-size:10px; text-align:right; }
+.lab-grid { display:grid; grid-template-columns:310px minmax(0,1fr); align-items:start; gap:16px; }
+.panel { border:1px solid var(--line); border-radius:calc(17px * var(--site-radius-scale)); background:var(--panel); box-shadow:0 8px 30px rgba(0,0,0,.06); min-width:0; }
+.panel-pad { padding:18px; }
+.panel-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:14px; }
+.panel-head h3 { font-size:14px; margin:0 0 3px; letter-spacing:-.02em; }
+.panel-head p { margin:0; color:var(--muted); font-size:10px; }
+.step { font-size:9px; font-weight:850; letter-spacing:.1em; padding:5px 7px; color:var(--muted); border:1px solid var(--line); border-radius:7px; white-space:nowrap; }
+.field-label { display:block; color:var(--muted); font-weight:750; font-size:10px; margin:15px 0 7px; }
+.scenario-options { display:grid; grid-template-columns:1fr; gap:7px; }
+.scenario-option { display:flex; gap:10px; align-items:center; width:100%; text-align:left; border:1px solid var(--line); background:var(--panel-2); border-radius:12px; padding:10px; color:var(--text); }
+.scenario-option[aria-pressed="true"] { border-color:var(--mint); background:rgba(141,224,207,.09); box-shadow:inset 3px 0 0 var(--mint); }
+.scenario-emoji { width:34px; height:34px; display:grid; place-items:center; background:rgba(255,255,255,.055); border-radius:10px; font-size:18px; flex:none; }
+.scenario-option strong { display:block; font-size:12px; }
+.scenario-option small { display:block; font-size:9px; line-height:1.35; color:var(--muted); margin-top:2px; }
+.control-select { width:100%; border:1px solid var(--line); background:var(--panel-2); color:var(--text); padding:10px; border-radius:10px; font-size:11px; }
+.severity-row { display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:11px; }
+.severity-value { font-weight:850; color:var(--mint); font-size:13px; }
+input[type="range"] { width:100%; margin:12px 0 4px; }
+.range-labels { display:flex; justify-content:space-between; color:var(--muted); font-size:9px; }
+.check-list { display:grid; gap:8px; }
+.check-option { display:flex; gap:9px; align-items:flex-start; padding:9px 10px; border:1px solid var(--line); border-radius:10px; cursor:pointer; background:transparent; }
+.check-option:has(input:checked) { background:rgba(141,224,207,.055); border-color:rgba(141,224,207,.48); }
+.check-option input { margin-top:3px; flex:none; }
+.check-option strong { display:block; font-size:10px; }
+.check-option small { display:block; color:var(--muted); font-size:9px; line-height:1.45; margin-top:2px; }
+.control-foot { margin-top:16px; display:grid; gap:8px; }
+.control-foot .btn { width:100%; }
+.tiny-disclaimer { font-size:9px; color:var(--muted); line-height:1.5; margin-top:10px; }
+.results-area { min-width:0; display:grid; gap:15px; }
+.metric-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:9px; }
+.metric { padding:14px; background:var(--panel); border:1px solid var(--line); border-radius:14px; min-width:0; }
+.metric-label { display:flex; gap:6px; align-items:center; justify-content:space-between; font-size:9px; color:var(--muted); font-weight:700; }
+.metric-value { font-size:clamp(21px,2.2vw,29px); font-weight:850; letter-spacing:-.06em; margin:7px 0 2px; line-height:1.1; }
+.metric-foot { color:var(--muted); font-size:9px; }
+.metric-value.good { color:var(--green); }.metric-value.warn {color:var(--orange)}.metric-value.bad {color:var(--red)}
+.visual-grid { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(230px,.8fr); gap:15px; }
+.panel-title-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:13px; }
+.panel-title-row h3 { font-size:13px; margin:0 0 3px; }
+.panel-title-row p { margin:0; font-size:10px; color:var(--muted); }
+.tag { display:inline-flex; align-items:center; padding:5px 7px; border:1px solid var(--line); color:var(--muted); border-radius:7px; font-size:9px; white-space:nowrap; }
+.city-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; }
+.zone { position:relative; min-height:100px; overflow:hidden; border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:10px; color:#f4f8ff; text-align:left; display:flex; flex-direction:column; justify-content:space-between; background:#203a50; isolation:isolate; }
+.zone:before { content:""; position:absolute; inset:0; background:linear-gradient(145deg, rgba(255,255,255,.14), transparent 60%); z-index:-1; }
+.zone[aria-pressed="true"] { outline:2px solid var(--mint); outline-offset:1px; }
+.zone:hover { filter:brightness(1.08); }
+.zone-top { display:flex; align-items:center; justify-content:space-between; gap:4px; font-size:9px; color:rgba(255,255,255,.8); }
+.zone-icon { font-size:14px; }
+.zone-name { font-size:11px; font-weight:800; line-height:1.2; }
+.zone-risk { font-size:21px; font-weight:900; letter-spacing:-.05em; line-height:1.15; }
+.zone-risk small { font-size:9px; font-weight:650; letter-spacing:0; opacity:.86; }
+.zone-track { height:4px; border-radius:100px; background:rgba(255,255,255,.3); margin-top:5px; overflow:hidden; }
+.zone-track span { display:block; height:100%; background:white; border-radius:100px; }
+.map-legend { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; font-size:9px; color:var(--muted); }
+.legend-item { display:flex; gap:5px; align-items:center; }
+.legend-dot { width:8px; height:8px; border-radius:3px; }
+.insight { background:var(--panel-2); border:1px solid var(--line); border-radius:13px; padding:14px; }
+.insight h4 { margin:0 0 4px; font-size:14px; }
+.insight p { font-size:10px; line-height:1.55; color:var(--muted); margin:0; }
+.insight-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:12px; }
+.insight-box { padding:10px; border:1px solid var(--line); border-radius:10px; }
+.insight-box span { display:block; color:var(--muted); font-size:9px; }
+.insight-box strong { display:block; font-size:17px; margin-top:3px; }
+.priority-list { display:grid; gap:7px; margin-top:11px; }
+.priority-item { display:grid; grid-template-columns:25px minmax(0,1fr) auto; align-items:center; gap:8px; font-size:10px; padding-bottom:8px; border-bottom:1px solid var(--line); }
+.priority-item:last-child { border-bottom:0; padding-bottom:0; }
+.priority-rank { width:23px; height:23px; border-radius:7px; display:grid; place-items:center; background:var(--panel-2); font-weight:850; color:var(--mint); }
+.priority-item strong { display:block; font-size:10px; }
+.priority-item small { display:block; font-size:9px; color:var(--muted); }
+.priority-score { font-size:11px; font-weight:850; color:var(--orange); }
+.chart-bars { display:grid; gap:12px; }
+.chart-row { display:grid; grid-template-columns:95px minmax(0,1fr) 38px; gap:9px; align-items:center; font-size:10px; }
+.chart-label { color:var(--muted); }
+.bar-track { height:12px; border-radius:100px; background:var(--panel-2); overflow:hidden; border:1px solid var(--line); }
+.bar-fill { height:100%; border-radius:100px; transition:width .35s ease; }
+.chart-number { text-align:right; font-weight:850; }
+.comparison-foot { font-size:9px; color:var(--muted); margin:12px 0 0; }
+.recommendations { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11px; }
+.recommendation { border:1px solid var(--line); border-radius:14px; background:var(--panel); padding:14px; }
+.rec-icon { font-size:18px; margin-bottom:9px; }
+.recommendation h4 { margin:0 0 5px; font-size:11px; }
+.recommendation p { margin:0; color:var(--muted); font-size:10px; line-height:1.6; }
+.rec-priority { display:inline-block; margin-top:11px; font-size:9px; color:var(--mint); border:1px solid rgba(141,224,207,.3); border-radius:7px; padding:4px 7px; }
+.info-section { padding:62px 0 10px; }
+.info-heading { display:grid; grid-template-columns:.8fr 1.2fr; gap:35px; align-items:start; margin-bottom:22px; }
+.info-heading h2 { font-size:calc(32px * var(--site-heading-scale)); line-height:1.08; letter-spacing:-.05em; margin:8px 0; }
+.info-heading p { color:var(--muted); font-size:12px; }
+.info-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; }
+.info-card { background:var(--panel); border:1px solid var(--line); border-radius:15px; padding:18px; }
+.info-card .num { color:var(--mint); font-weight:900; font-size:11px; letter-spacing:.12em; }
+.info-card h3 { font-size:13px; margin:12px 0 7px; }
+.info-card p { font-size:11px; color:var(--muted); margin:0; line-height:1.65; }
+.assumption-layout { display:grid; grid-template-columns:1fr 1fr; gap:13px; }
+.assumption-list { margin:0; padding-left:18px; color:var(--muted); font-size:11px; line-height:1.9; }
+.callout { border:1px solid rgba(255,192,108,.34); background:rgba(255,192,108,.07); color:var(--text); padding:15px 16px; border-radius:13px; font-size:11px; line-height:1.65; }
+.callout strong { color:#ffd398; }
+.tech-stack { display:flex; flex-wrap:wrap; gap:7px; margin-top:13px; }
+.footer { border-top:1px solid rgba(154,179,210,.15); margin-top:55px; padding:22px 0 28px; display:flex; justify-content:space-between; gap:15px; color:var(--muted); font-size:10px; }
+.toast { position:fixed; bottom:20px; left:50%; transform:translate(-50%,20px); opacity:0; pointer-events:none; transition:.2s; background:#e0fff4; color:#12332b; border-radius:12px; box-shadow:var(--shadow); padding:12px 16px; z-index:99; font-size:12px; font-weight:800; max-width:calc(100vw - 30px); }
+.toast.show { opacity:1; transform:translate(-50%,0); }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media (max-width: 1000px) { .hero { grid-template-columns:1fr; gap:22px; }.hero-note { max-width:650px; }.lab-grid { grid-template-columns:280px minmax(0,1fr); }.metric-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.visual-grid { grid-template-columns:1fr; } }
+@media (max-width: 700px) { .container { width:calc(100% - 28px); }.topbar { min-height:70px; flex-wrap:wrap; padding:12px 0; }.nav { display:none; }.top-right .badge { display:none; }.top-right .btn { padding:8px 10px; font-size:10px; }.brand { min-width:0; }.hero { padding:35px 0 22px; }.hero p { font-size:13px; }.hero-note { padding:15px; }.lab-head { align-items:flex-start; flex-direction:column; }.lab-head-right { text-align:left; }.lab-grid { grid-template-columns:1fr; }.scenario-options { grid-template-columns:repeat(3,minmax(0,1fr)); }.scenario-option { display:block; padding:9px 7px; }.scenario-emoji { margin-bottom:6px; }.scenario-option small { font-size:8px; }.panel-pad { padding:14px; }.city-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }.zone { min-height:94px; padding:8px; }.zone-name { font-size:10px; }.zone-risk { font-size:18px; }.recommendations,.info-cards { grid-template-columns:1fr; }.info-heading { grid-template-columns:1fr; gap:6px; }.info-section { padding-top:45px; }.assumption-layout { grid-template-columns:1fr; }.footer { flex-direction:column; }.chart-row { grid-template-columns:78px minmax(0,1fr) 30px; }.micro-stat strong { font-size:16px; } }
+@media (max-width: 390px) { .scenario-options { grid-template-columns:1fr; }.scenario-option { display:flex; }.scenario-emoji { margin-bottom:0; }.city-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.metric { padding:11px; }.metric-label { font-size:8px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto!important; transition-duration:.001ms!important; animation-duration:.001ms!important; } }
+</style>
+</head>
+<body>
+<div id="appRoot">
+  <header class="container topbar">
+    <a class="brand" href="#top" aria-label="NagarTwin home">
+      <span class="brand-icon">N↗</span>
+      <span><span class="brand-title">NagarTwin</span><span class="brand-sub">Future Scenario Engine</span></span>
+    </a>
+    <nav class="nav" aria-label="Main navigation"><a href="#lab">Scenario lab</a><a href="#how">How it works</a><a href="#method">Model & limits</a></nav>
+    <div class="top-right"><span class="badge"><span class="dot"></span>SYNTHETIC DEMO DATA</span><button class="btn primary" id="exportTop">Export scenario ↗</button></div>
+  </header>
+
+  <main>
+    <section class="container hero" id="top">
+      <div>
+        <div class="eyebrow">Public welfare · Urban resilience · Decision support</div>
+        <h1>Test tomorrow's crisis.<br><span>Before it happens.</span></h1>
+        <p>NagarTwin is a public-welfare simulation lab. Explore how heatwaves, heavy rainfall or power outages could affect access to essential services—and compare possible interventions before resources are committed.</p>
+        <div class="hero-actions"><a class="btn primary" href="#lab" style="text-decoration:none">Open scenario lab ↓</a><button class="btn ghost" id="resetHero">Reset to baseline</button></div>
+      </div>
+      <aside class="hero-note" aria-label="What this prototype does">
+        <div class="note-top"><span>Planning sandbox</span><span class="live-icon">⌁</span></div>
+        <h3>From “where is the risk?” to “what could help?”</h3>
+        <p>Change the event intensity. Add cooling centres, drainage actions or backup power. See how the model's estimated risk and service-access scores change across fictional neighbourhoods.</p>
+        <div class="note-rule"></div>
+        <div class="micro-stats"><div class="micro-stat"><strong>12</strong><span>fictional zones</span></div><div class="micro-stat"><strong>3</strong><span>scenario types</span></div><div class="micro-stat"><strong>100%</strong><span>browser-side demo</span></div></div>
+      </aside>
+    </section>
+
+    <section class="container" id="lab">
+      <div class="lab-head">
+        <div><div class="section-kicker">Interactive prototype / v0.1</div><h2 class="section-title">Future Scenario Lab</h2><p class="section-intro">Explore a controlled, fictional city model. All values are illustrative—not live measurements, official warnings or predictions.</p></div>
+        <div class="lab-head-right">MODEL CITY: CIVITAS-12<br>DATA MODE: SYNTHETIC · NO LIVE FEEDS</div>
+      </div>
+
+      <div class="lab-grid">
+        <aside class="panel panel-pad" aria-label="Scenario controls">
+          <div class="panel-head"><div><h3>Configure an event</h3><p>Choose a scenario and response package.</p></div><span class="step">01 / SETUP</span></div>
+          <span class="field-label" style="margin-top:0">Scenario type</span>
+          <div class="scenario-options" role="group" aria-label="Select scenario">
+            <button class="scenario-option" data-scenario="heat" aria-pressed="true"><span class="scenario-emoji" aria-hidden="true">☀️</span><span><strong>Heatwave</strong><small>Heat exposure & cooling access</small></span></button>
+            <button class="scenario-option" data-scenario="rain" aria-pressed="false"><span class="scenario-emoji" aria-hidden="true">🌧️</span><span><strong>Heavy rainfall</strong><small>Flood exposure & route disruption</small></span></button>
+            <button class="scenario-option" data-scenario="power" aria-pressed="false"><span class="scenario-emoji" aria-hidden="true">⚡</span><span><strong>Power outage</strong><small>Critical service dependency</small></span></button>
+          </div>
+          <label class="field-label" for="areaSelect">Focus area</label>
+          <select class="control-select" id="areaSelect"><option value="all">All 12 zones</option></select>
+          <div class="field-label"><div class="severity-row"><span>Event intensity</span><output class="severity-value" id="intensityValue" for="intensity">60 / 100 · High</output></div></div>
+          <input id="intensity" type="range" min="10" max="100" value="60" step="5" aria-label="Event intensity from 10 to 100">
+          <div class="range-labels"><span>10 · Low</span><span>55 · Elevated</span><span>100 · Extreme</span></div>
+          <span class="field-label">Test interventions</span>
+          <div class="check-list" id="interventions"></div>
+          <div class="control-foot"><button class="btn primary" id="runBtn">Run scenario simulation ↗</button><button class="btn" id="clearActions">Clear interventions</button></div>
+          <p class="tiny-disclaimer">This is a deterministic teaching model built from synthetic values. It cannot predict real emergencies or replace official emergency advice.</p>
+        </aside>
+
+        <div class="results-area" aria-live="polite">
+          <div class="metric-grid" id="metrics">
+            <div class="metric"><div class="metric-label">Population in model <span>◎</span></div><div class="metric-value">—</div><div class="metric-foot">Fictional population</div></div>
+            <div class="metric"><div class="metric-label">Estimated exposure <span>△</span></div><div class="metric-value">—</div><div class="metric-foot">Modelled people at risk</div></div>
+            <div class="metric"><div class="metric-label">Service access <span>⌖</span></div><div class="metric-value">—</div><div class="metric-foot">Composite score / 100</div></div>
+            <div class="metric"><div class="metric-label">High-risk zones <span>!</span></div><div class="metric-value">—</div><div class="metric-foot">Risk score ≥ 65</div></div>
+          </div>
+
+          <div class="visual-grid">
+            <section class="panel panel-pad">
+              <div class="panel-title-row"><div><h3>Neighbourhood risk field</h3><p>Tap a zone to inspect its assumptions and results.</p></div><span class="tag">SCHEMATIC · NOT GIS</span></div>
+              <div class="city-grid" id="cityGrid" aria-label="Schematic grid of fictional neighbourhoods"></div>
+              <div class="map-legend"><span class="legend-item"><i class="legend-dot" style="background:#47b88b"></i>Lower 0–34</span><span class="legend-item"><i class="legend-dot" style="background:#d7ab4b"></i>Moderate 35–64</span><span class="legend-item"><i class="legend-dot" style="background:#d96761"></i>Higher 65–100</span></div>
+              <p class="tiny-disclaimer">Risk colours show this model's relative scores only. Tiles do not represent actual coordinates or neighbourhood boundaries.</p>
+            </section>
+            <section class="panel panel-pad">
+              <div class="panel-title-row"><div><h3 id="selectedTitle">Selected zone: Central</h3><p id="selectedSub">Synthetic neighbourhood profile</p></div><span class="tag" id="selectedRiskTag">RISK —</span></div>
+              <div class="insight"><h4 id="insightHeadline">Run a scenario to explore impacts</h4><p id="insightText">Select an event and run the model to see how assumed exposure and essential-service access change.</p><div class="insight-grid"><div class="insight-box"><span>Modeled access score</span><strong id="zoneAccess">—</strong></div><div class="insight-box"><span>Estimated exposure</span><strong id="zoneExposed">—</strong></div><div class="insight-box"><span>Clinics in zone</span><strong id="zoneClinics">—</strong></div><div class="insight-box"><span>Water points</span><strong id="zoneWater">—</strong></div></div></div>
+              <div class="section-kicker" style="margin-top:16px">Priority watchlist</div>
+              <div class="priority-list" id="priorityList"></div>
+            </section>
+          </div>
+
+          <section class="panel panel-pad">
+            <div class="panel-title-row"><div><h3>Do interventions change the outcome?</h3><p>Compare baseline access, event with no response, and your selected response package.</p></div><span class="tag">MODEL COMPARISON</span></div>
+            <div class="chart-bars" id="comparisonChart"></div>
+            <p class="comparison-foot" id="comparisonFoot">Values are modelled composite scores, not observed outcomes. A higher access score indicates less disruption under the assumptions encoded here.</p><p class="comparison-foot" id="runStamp">Live preview updates as you adjust controls. Press Run to timestamp and record this configuration in the current session.</p>
+          </section>
+        </div>
+      </div>
+
+      <div class="section-head" style="display:flex;align-items:flex-end;justify-content:space-between;gap:15px;margin:24px 0 13px"><div><div class="section-kicker">Suggested responses</div><h2 class="section-title">Action insights</h2><p class="section-intro">Generated from the model's assumptions and selected scenario—not official operational instructions.</p></div><button class="btn small" id="exportCsv">Download zone data CSV</button></div>
+      <div class="recommendations" id="recommendations"></div>
+    </section>
+
+    <section class="container info-section" id="how">
+      <div class="info-heading"><div><div class="section-kicker">01 / System logic</div><h2>Simulate. Compare.<br>Explain the trade-off.</h2></div><div><p>NagarTwin is designed as a transparent decision-support tool, not an oracle. It estimates how a hypothetical event could change a neighbourhood's exposure and access to essential services. You can compare a no-action case against selected interventions and inspect the assumptions behind each score.</p><div class="tech-stack"><span class="tag">Scenario modelling</span><span class="tag">Risk scoring</span><span class="tag">Spatial planning concept</span><span class="tag">Equity-aware evaluation</span><span class="tag">GitHub Pages compatible</span></div></div></div>
+      <div class="info-cards">
+        <article class="info-card"><span class="num">STEP 01</span><h3>Define an event</h3><p>Select heatwave, rainfall, or power outage and choose a controlled intensity value. This controls severity in the demo model; it is not tied to a real forecast.</p></article>
+        <article class="info-card"><span class="num">STEP 02</span><h3>Model local impact</h3><p>Each synthetic zone has a population, vulnerability factor, baseline access score, essential-service counts, and scenario-specific exposure factors.</p></article>
+        <article class="info-card"><span class="num">STEP 03</span><h3>Test interventions</h3><p>Intervention toggles change explicit coefficients. Results are repeatable, inspectable, and exportable so you can compare scenarios and reproduce a run.</p></article>
+      </div>
+    </section>
+
+    <section class="container info-section" id="method" style="padding-top:48px">
+      <div class="info-heading"><div><div class="section-kicker">02 / Trust & limitations</div><h2>Show the assumptions.<br>Never fake certainty.</h2></div><div><p>The current version intentionally uses fictional data and simple deterministic rules. It demonstrates the interface and a reproducible scenario workflow; it does not validate a real city's risk, forecast an emergency, or establish that any intervention will work in practice.</p></div></div>
+      <div class="assumption-layout">
+        <article class="panel panel-pad"><h3 style="font-size:13px;margin-bottom:10px">What the model uses</h3><ul class="assumption-list"><li>12 fictional zones with illustrative population estimates.</li><li>Scenario-specific baseline exposure factors (heat, rainfall, outage).</li><li>Vulnerability and essential-service availability indicators.</li><li>Event-intensity multiplier and explicit intervention deductions.</li><li>A composite 0–100 access score for comparison across runs.</li><li>Deterministic logic: same inputs yield the same outputs.</li></ul></article>
+        <article class="panel panel-pad"><h3 style="font-size:13px;margin-bottom:10px">What it does not do</h3><ul class="assumption-list"><li>It does not use live weather, power-grid, road, clinic, or government feeds.</li><li>It does not calculate a real flood boundary or engineering-grade heat model.</li><li>It does not verify submitted community reports or use actual geospatial coordinates.</li><li>It does not provide emergency directions or guarantee a route is safe.</li><li>It does not prove causality, fairness, or predictive accuracy.</li><li>Real deployment needs validated local data, domain experts, and field evaluation.</li></ul></article>
+      </div>
+      <div class="callout" style="margin-top:13px"><strong>Safety notice:</strong> NagarTwin is a research prototype for scenario exploration. Do not use its fictional outputs to make real emergency, medical, infrastructure, or evacuation decisions. Follow official local authorities and emergency services for live incidents.</div>
+    </section>
+  </main>
+  <footer class="container footer"><span><strong style="color:var(--text)">NagarTwin</strong> · Future Scenario Engine · v0.1.0</span><span>Prototype for public-welfare planning · Not affiliated with any government or university.</span><span><a href="#method" style="color:var(--mint);text-decoration:none">Method & limitations ↑</a></span></footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const state = { scenario: 'heat', intensity: 60, interventions: new Set(['cooling','water']), selectedZone: 'central', focusArea: 'all', results: null, runCount: 0, lastRun: null };
+
+  // All profiles are fictional. Replace only with appropriately sourced and documented local data.
+  const zones = [
+    {id:'north',name:'North Gate',population:18500,vulnerability:0.62,access:73,clinics:2,water:3,heat:66,rain:36,power:49,drainage:58,backup:42,road:72},
+    {id:'riverside',name:'Riverside',population:22100,vulnerability:0.71,access:61,clinics:1,water:2,heat:61,rain:86,power:52,drainage:27,backup:38,road:51},
+    {id:'oldtown',name:'Old Town',population:27600,vulnerability:0.68,access:57,clinics:2,water:2,heat:78,rain:62,power:66,drainage:41,backup:35,road:48},
+    {id:'eastmarket',name:'East Market',population:16400,vulnerability:0.48,access:81,clinics:2,water:4,heat:52,rain:43,power:44,drainage:62,backup:55,road:77},
+    {id:'industrial',name:'Industrial',population:19300,vulnerability:0.53,access:69,clinics:1,water:3,heat:74,rain:49,power:83,drainage:54,backup:48,road:68},
+    {id:'central',name:'Central',population:31200,vulnerability:0.44,access:88,clinics:4,water:5,heat:57,rain:52,power:46,drainage:67,backup:73,road:86},
+    {id:'lakeward',name:'Lakeward',population:14800,vulnerability:0.57,access:72,clinics:1,water:3,heat:60,rain:77,power:58,drainage:35,backup:46,road:59},
+    {id:'university',name:'University',population:12600,vulnerability:0.29,access:91,clinics:2,water:4,heat:49,rain:35,power:39,drainage:71,backup:68,road:89},
+    {id:'southworks',name:'South Works',population:24100,vulnerability:0.64,access:63,clinics:2,water:2,heat:81,rain:64,power:72,drainage:43,backup:39,road:56},
+    {id:'clinicrow',name:'Clinic Row',population:17200,vulnerability:0.38,access:84,clinics:5,water:4,heat:54,rain:45,power:51,drainage:64,backup:79,road:82},
+    {id:'hillview',name:'Hillview',population:10900,vulnerability:0.35,access:78,clinics:1,water:2,heat:48,rain:29,power:47,drainage:76,backup:52,road:71},
+    {id:'outereast',name:'Outer East',population:20500,vulnerability:0.73,access:54,clinics:1,water:1,heat:72,rain:69,power:75,drainage:38,backup:31,road:44}
+  ];
+  const scenarioInfo = {
+    heat: {title:'Heatwave',icon:'☀️',field:'heat',base:'High heat exposure',summary:'Heat stress can increase demand for cooling, water, and accessible clinics.',interventions:[
+      {id:'cooling',name:'Open cooling centres',desc:'Reduce modeled heat exposure where a cooling centre is available.',risk:18,access:8,icon:'❄️'},
+      {id:'water',name:'Add community water points',desc:'Improve assumed access to drinking water and relief points.',risk:11,access:6,icon:'💧'},
+      {id:'clinicbackup',name:'Back up critical clinics',desc:'Reduce service disruption at clinics during peak demand.',risk:4,access:8,icon:'🏥'},
+      {id:'shade',name:'Prioritise shaded public spaces',desc:'Lower heat exposure in the most vulnerable zones.',risk:8,access:4,icon:'🌳'}
+    ]},
+    rain: {title:'Heavy rainfall',icon:'🌧️',field:'rain',base:'Flood & route exposure',summary:'Intense rainfall can disrupt road connectivity and delay access to clinics and relief points.',interventions:[
+      {id:'drainage',name:'Clear drains / deploy pumps',desc:'Reduce modeled waterlogging exposure in zones with weak drainage.',risk:19,access:5,icon:'🌊'},
+      {id:'reroute',name:'Activate alternate routes',desc:'Improve access when the preferred road connection is assumed disrupted.',risk:3,access:12,icon:'↗️'},
+      {id:'shelters',name:'Open nearby relief shelters',desc:'Improve proximity to support locations during disruption.',risk:8,access:8,icon:'🏠'},
+      {id:'warning',name:'Issue targeted local warnings',desc:'Reduce assumed exposure through earlier awareness; not a real alert feed.',risk:7,access:3,icon:'📣'}
+    ]},
+    power: {title:'Power outage',icon:'⚡',field:'power',base:'Critical-service dependency',summary:'Power disruption can affect clinics, water access, communications, and service continuity.',interventions:[
+      {id:'backup',name:'Back up clinics & water pumps',desc:'Reduce modeled service interruption where backup coverage is assumed.',risk:9,access:15,icon:'🔋'},
+      {id:'microgrid',name:'Prioritise critical microgrids',desc:'Improve continuity for essential service nodes, not the whole grid.',risk:8,access:10,icon:'⚡'},
+      {id:'charging',name:'Open community charging hubs',desc:'Improve communications access at designated support sites.',risk:3,access:5,icon:'🔌'},
+      {id:'shelters',name:'Open support shelters',desc:'Improve assumed access to staffed relief locations.',risk:5,access:7,icon:'🏠'}
+    ]}
+  };
+  const clamp=(v,min=0,max=100)=>Math.max(min,Math.min(max,v));
+  const number=(v)=>Math.round(v).toLocaleString('en-IN');
+  const average=(arr)=>arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;
+  const currentInterventions=()=>scenarioInfo[state.scenario].interventions.filter(x=>state.interventions.has(x.id));
+  const selectedZones=()=>state.focusArea==='all'?zones:zones.filter(z=>z.id===state.focusArea);
+  const intensityLabel=v=>v<35?'Low':v<60?'Elevated':v<80?'High':'Extreme';
+  const riskColor=v=>v<35?'#267c63':v<65?'#9b7224':'#a94444';
+  const riskClass=v=>v<35?'good':v<65?'warn':'bad';
+
+  function computeZone(z,withInterventions=true){
+    const sc=scenarioInfo[state.scenario];
+    const baseExposure=z[sc.field];
+    const severityFactor=.42+state.intensity/88;
+    const vulnerabilityBoost=z.vulnerability*14;
+    const rainDrainPenalty=state.scenario==='rain'?(100-z.drainage)*.10:0;
+    const powerBackupPenalty=state.scenario==='power'?(100-z.backup)*.12:0;
+    let risk=baseExposure*severityFactor + vulnerabilityBoost + rainDrainPenalty + powerBackupPenalty - 10;
+    let access=z.access - Math.max(0,risk-20)*.38;
+    const active=withInterventions?currentInterventions():[];
+    active.forEach(it=>{
+      // Interventions are damped by local readiness; this is a stated modelling assumption.
+      const readiness=state.scenario==='rain'&&it.id==='drainage' ? (.55+z.drainage/220) : state.scenario==='power'&&['backup','microgrid'].includes(it.id) ? (.5+z.backup/200) : (.72+z.access/400);
+      risk -= it.risk*readiness;
+      access += it.access*readiness;
+    });
+    risk=clamp(risk);
+    access=clamp(access,10,100);
+    const exposed=Math.round(z.population*(risk/100)*(.42+z.vulnerability*.3));
+    return {...z,risk,access,exposed,baseRisk:clamp(baseExposure*severityFactor+vulnerabilityBoost+rainDrainPenalty+powerBackupPenalty-10),withInterventions};
+  }
+  function aggregate(list){
+    const population=list.reduce((s,z)=>s+z.population,0) || 1;
+    const exposed=list.reduce((s,z)=>s+z.exposed,0);
+    const weighted=(key)=>list.reduce((s,z)=>s+z[key]*z.population,0)/population;
+    const access=weighted('access');
+    const risk=weighted('risk');
+    const high=list.filter(z=>z.risk>=65).length;
+    const weightedVuln=weighted('vulnerability');
+    return {population,exposed,access,risk,high,weightedVuln,zoneCount:list.length};
+  }
+  function renderInterventions(){
+    const el=$('interventions');
+    el.innerHTML=scenarioInfo[state.scenario].interventions.map(it=>`<label class="check-option"><input type="checkbox" value="${it.id}" ${state.interventions.has(it.id)?'checked':''}><span><strong>${it.icon} ${it.name}</strong><small>${it.desc}</small></span></label>`).join('');
+    el.querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>{if(input.checked)state.interventions.add(input.value);else state.interventions.delete(input.value);renderScenario();}));
+  }
+  function renderZoneGrid(results){
+    $('cityGrid').innerHTML=results.map(z=>{
+      const isSelected=state.selectedZone===z.id;
+      const color=riskColor(z.risk);
+      return `<button class="zone" type="button" data-zone="${z.id}" aria-pressed="${isSelected}" aria-label="${z.name}, risk score ${Math.round(z.risk)}" style="background-color:${color}"><div class="zone-top"><span>${z.icon||'▦'}</span><span>${z.risk<35?'LOW':z.risk<65?'MOD.':'HIGH'}</span></div><div><div class="zone-name">${z.name}</div><div class="zone-risk">${Math.round(z.risk)}<small> / 100</small></div><div class="zone-track"><span style="width:${z.risk}%"></span></div></div></button>`;
+    }).join('');
+    $('cityGrid').querySelectorAll('[data-zone]').forEach(btn=>btn.addEventListener('click',()=>{state.selectedZone=btn.dataset.zone;state.focusArea=btn.dataset.zone;$('areaSelect').value=state.focusArea;renderScenario();}));
+  }
+  function renderMetrics(results){
+    const totals=aggregate(results);
+    const metrics=[
+      {label:'Population in model',value:number(totals.population),foot:'Fictional zone population',tone:''},
+      {label:'Estimated exposure',value:number(totals.exposed),foot:'Modelled people exposed',tone:totals.exposed/totals.population>.23?'bad':totals.exposed/totals.population>.14?'warn':'good'},
+      {label:'Service access',value:Math.round(totals.access)+'/100',foot:'Composite score · higher is better',tone:totals.access>=70?'good':totals.access>=50?'warn':'bad'},
+      {label:'High-risk zones',value:totals.high,foot:'Risk score ≥ 65 / 100',tone:totals.high>=5?'bad':totals.high>=2?'warn':'good'}
+    ];
+    $('metrics').innerHTML=metrics.map(m=>`<div class="metric"><div class="metric-label">${m.label}<span>◈</span></div><div class="metric-value ${m.tone}">${m.value}</div><div class="metric-foot">${m.foot}</div></div>`).join('');
+  }
+  function renderSelected(results){
+    let z=results.find(x=>x.id===state.selectedZone);
+    if(!z)z=results.slice().sort((a,b)=>b.risk-a.risk)[0];
+    if(!z){return;}
+    const baselineAccess=zones.find(x=>x.id===z.id).access;
+    $('selectedTitle').textContent='Selected zone: '+z.name;
+    $('selectedSub').textContent=`Population ${number(z.population)} · vulnerability index ${Math.round(z.vulnerability*100)}/100`;
+    $('selectedRiskTag').textContent=`RISK ${Math.round(z.risk)}/100`;
+    $('selectedRiskTag').style.color=z.risk>=65?'#ff9898':z.risk>=35?'#ffd398':'#8de0cf';
+    $('insightHeadline').textContent=z.risk>=65?'Priority zone for review':z.risk>=35?'Moderate modeled exposure':'Lower modeled exposure';
+    $('insightText').textContent=`${scenarioInfo[state.scenario].summary} In this synthetic profile, ${z.name} has a baseline access score of ${Math.round(baselineAccess)}/100. The current run estimates risk ${Math.round(z.risk)}/100 and access ${Math.round(z.access)}/100 after selected interventions.`;
+    $('zoneAccess').textContent=Math.round(z.access)+'/100';
+    $('zoneExposed').textContent=number(z.exposed);
+    $('zoneClinics').textContent=z.clinics;
+    $('zoneWater').textContent=z.water;
+  }
+  function renderPriority(results){
+    const sorted=[...results].sort((a,b)=>b.risk-a.risk).slice(0,4);
+    $('priorityList').innerHTML=sorted.map((z,i)=>`<div class="priority-item"><span class="priority-rank">${i+1}</span><span><strong>${z.name}</strong><small>${number(z.exposed)} modelled people exposed</small></span><span class="priority-score">${Math.round(z.risk)}/100</span></div>`).join('');
+  }
+  function renderComparison(results){
+    const base=selectedZones();
+    const noAction=base.map(z=>computeZone(z,false));
+    const withAction=base.map(z=>computeZone(z,true));
+    const weightedAccess=(list)=>{const total=list.reduce((s,z)=>s+z.population,0)||1;return list.reduce((s,z)=>s+z.access*z.population,0)/total;};
+    const baseline=weightedAccess(base);
+    const disrupted=weightedAccess(noAction);
+    const mitigated=weightedAccess(withAction);
+    const bars=[
+      {label:'Baseline access',value:baseline,color:'#83b9ff'},
+      {label:'Event · no action',value:disrupted,color:'#d96761'},
+      {label:'With interventions',value:mitigated,color:'#47b88b'}
+    ];
+    $('comparisonChart').innerHTML=bars.map(b=>`<div class="chart-row"><span class="chart-label">${b.label}</span><div class="bar-track" role="img" aria-label="${b.label}: ${Math.round(b.value)} out of 100"><div class="bar-fill" style="width:${clamp(b.value)}%;background:${b.color}"></div></div><span class="chart-number">${Math.round(b.value)}</span></div>`).join('');
+    const delta=Math.round(mitigated-disrupted);
+    $('comparisonFoot').textContent=`Selected area: ${state.selectedZone==='all'?'all 12 zones':(zones.find(z=>z.id===state.selectedZone)?.name||state.selectedZone)}. In this model, the chosen response package changes the composite access score by ${delta>=0?'+':''}${delta} points compared with no intervention. Scores are illustrative and do not represent measured outcomes.`;
+  }
+  function renderRecommendations(results){
+    const sc=scenarioInfo[state.scenario];
+    const top=[...results].sort((a,b)=>b.risk-a.risk).slice(0,3);
+    const active=currentInterventions();
+    const items=top.map((z,i)=>{
+      let title,detail,icon,priority;
+      if(state.scenario==='heat'){
+        title=['Prioritise cooling access','Review water-point coverage','Check clinic continuity'][i];
+        detail=`${z.name} has a modeled heat-risk score of ${Math.round(z.risk)}/100 and vulnerability index ${Math.round(z.vulnerability*100)}/100. Validate local cooling, drinking-water and clinic availability before any real action.`;
+        icon=['❄️','💧','🏥'][i];
+      } else if(state.scenario==='rain') {
+        title=['Review drainage capacity','Check alternate access routes','Confirm relief-site reach'][i];
+        detail=`${z.name} has a modeled rainfall-exposure score of ${Math.round(z.risk)}/100 and drainage-readiness factor ${Math.round(z.drainage)}/100. The model does not compute actual flood depth or passable roads.`;
+        icon=['🌊','↗️','🏠'][i];
+      } else {
+        title=['Review critical backup power','Protect clinic and water services','Check support-point availability'][i];
+        detail=`${z.name} has a modeled outage-exposure score of ${Math.round(z.risk)}/100 and backup-readiness factor ${Math.round(z.backup)}/100. No real electricity-grid or facility-status data are connected.`;
+        icon=['🔋','🏥','🔌'][i];
+      }
+      return {title,detail,icon,priority:i===0?'Review first':i===1?'Review next':'Monitor'};
+    });
+    if(active.length){
+      const gain=Math.round(average(results.map(z=>z.access))-average(selectedZones().map(z=>z.access)));
+      items[0].detail+=` Current intervention package selected: ${active.map(x=>x.name.toLowerCase()).join(', ')}.`;
+    }
+    $('recommendations').innerHTML=items.map(x=>`<article class="recommendation"><div class="rec-icon">${x.icon}</div><h4>${x.title}</h4><p>${x.detail}</p><span class="rec-priority">${x.priority} · Model-derived</span></article>`).join('');
+  }
+  function renderScenario(){
+    $('intensityValue').textContent=`${state.intensity} / 100 · ${intensityLabel(state.intensity)}`;
+    const allResults=zones.map(z=>computeZone(z,true));
+    const focus=state.focusArea==='all'?allResults:allResults.filter(z=>z.id===state.focusArea);
+    state.results=allResults;
+    renderMetrics(focus);renderZoneGrid(allResults);renderSelected(allResults);renderPriority(allResults);renderComparison(focus);renderRecommendations(focus);
+  }
+  function setScenario(key){
+    state.scenario=key;
+    state.interventions=new Set(scenarioInfo[key].interventions.slice(0,2).map(x=>x.id));
+    document.querySelectorAll('[data-scenario]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.scenario===key)));
+    renderInterventions();renderScenario();
+  }
+  function runScenario(){state.runCount++;state.lastRun=new Date().toISOString();renderScenario();$('runStamp').textContent=`Simulation #${state.runCount} recorded in this browser session at ${new Date(state.lastRun).toLocaleString()}. This is a reproducible synthetic scenario, not a live forecast.`;toast(`Simulation complete · Run ${state.runCount}. Results are illustrative, not a live forecast.`);}
+  function reset(){state.scenario='heat';state.intensity=60;state.interventions=new Set(['cooling','water']);state.selectedZone='central';$('intensity').value=60;$('areaSelect').value='all';state.selectedZone='all';setScenario('heat');$('areaSelect').value='all';state.selectedZone='all';renderScenario();toast('Controls reset to the demo baseline.');}
+  function exportJson(){
+    const list=selectedZones().map(z=>computeZone(z,true));
+    const payload={project:'NagarTwin — Future Scenario Engine',version:'0.1.0',exported_at:new Date().toISOString(),data_status:'SYNTHETIC_DEMO_ONLY',warning:'Illustrative model outputs only. Not a real-world forecast or emergency planning instruction.',run_number:state.runCount,simulated_at:state.lastRun,inputs:{scenario:state.scenario,scenario_name:scenarioInfo[state.scenario].title,intensity:state.intensity,intensity_label:intensityLabel(state.intensity),focus_area:state.focusArea,selected_zone:state.selectedZone,interventions:currentInterventions().map(x=>x.id)},summary:aggregate(list),zones:list.map(z=>({id:z.id,name:z.name,population:z.population,vulnerability_index:z.vulnerability,baseline_access_score:z.access,risk_score:Math.round(z.risk),estimated_exposure:z.exposed,clinics:z.clinics,water_points:z.water,heat_factor:z.heat,rain_factor:z.rain,power_factor:z.power})),model:{type:'deterministic heuristic scenario model',validated:false,uses_live_data:false,intervention_effects:'Illustrative coefficients; not empirically validated'}};
+    download('nagartwin-scenario-'+state.scenario+'-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(payload,null,2),'application/json');toast('Scenario report exported as JSON.');
+  }
+  function exportCsv(){
+    const list=selectedZones().map(z=>computeZone(z,true));
+    const headers=['zone_id','zone_name','population_synthetic','vulnerability_index','scenario','intensity','risk_score_modelled','estimated_exposure_modelled','service_access_score_modelled','clinics_synthetic','water_points_synthetic'];
+    const rows=list.map(z=>[z.id,z.name,z.population,z.vulnerability,state.scenario,state.intensity,Math.round(z.risk),z.exposed,Math.round(z.access),z.clinics,z.water]);
+    const csv=[headers,...rows].map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');
+    download('nagartwin-zone-data-'+new Date().toISOString().slice(0,10)+'.csv',csv,'text/csv;charset=utf-8');toast('Zone table exported as CSV.');
+  }
+  function download(name,content,type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+  function init(){
+    $('areaSelect').innerHTML='<option value="all">All 12 zones</option>'+zones.map(z=>`<option value="${z.id}">${z.name}</option>`).join('');
+    document.querySelectorAll('[data-scenario]').forEach(btn=>btn.addEventListener('click',()=>setScenario(btn.dataset.scenario)));
+    $('intensity').addEventListener('input',e=>{state.intensity=Number(e.target.value);renderScenario();});
+    $('areaSelect').addEventListener('change',e=>{state.focusArea=e.target.value;if(state.focusArea!=='all')state.selectedZone=state.focusArea;renderScenario();});
+    $('runBtn').addEventListener('click',runScenario);$('exportTop').addEventListener('click',exportJson);$('exportCsv').addEventListener('click',exportCsv);$('resetHero').addEventListener('click',reset);
+    $('clearActions').addEventListener('click',()=>{state.interventions.clear();renderInterventions();renderScenario();toast('All interventions cleared. Compare the no-action scenario.');});
+    renderInterventions();renderScenario();
+  }
+  function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),3600);}
+  init();
+})();
+</script>
+</body>
+</html>
