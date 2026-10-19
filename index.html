@@ -32,7 +32,7 @@
   --red: #ff8585;
   --green: #7ae0ae;
   --shadow: 0 18px 50px rgba(0,0,0,.12);
-  color-scheme: light dark;
+  color-scheme: dark;
   font-synthesis: none;
 }
 * { box-sizing: border-box; }
@@ -481,10 +481,10 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
     renderInterventions();renderScenario();
   }
   function runScenario(){state.runCount++;state.lastRun=new Date().toISOString();renderScenario();$('runStamp').textContent=`Simulation #${state.runCount} recorded in this browser session at ${new Date(state.lastRun).toLocaleString()}. This is a reproducible synthetic scenario, not a live forecast.`;toast(`Simulation complete · Run ${state.runCount}. Results are illustrative, not a live forecast.`);}
-  function reset(){state.scenario='heat';state.intensity=60;state.interventions=new Set(['cooling','water']);state.selectedZone='central';$('intensity').value=60;$('areaSelect').value='all';state.selectedZone='all';setScenario('heat');$('areaSelect').value='all';state.selectedZone='all';renderScenario();toast('Controls reset to the demo baseline.');}
+  function reset(){state.scenario='heat';state.intensity=60;state.interventions=new Set(['cooling','water']);state.focusArea='all';state.selectedZone='central';$('intensity').value=60;$('areaSelect').value='all';setScenario('heat');$('areaSelect').value='all';state.focusArea='all';state.selectedZone='central';renderScenario();toast('Controls reset to the demo baseline.');}
   function exportJson(){
     const list=selectedZones().map(z=>computeZone(z,true));
-    const payload={project:'NagarTwin — Future Scenario Engine',version:'0.1.0',exported_at:new Date().toISOString(),data_status:'SYNTHETIC_DEMO_ONLY',warning:'Illustrative model outputs only. Not a real-world forecast or emergency planning instruction.',run_number:state.runCount,simulated_at:state.lastRun,inputs:{scenario:state.scenario,scenario_name:scenarioInfo[state.scenario].title,intensity:state.intensity,intensity_label:intensityLabel(state.intensity),focus_area:state.focusArea,selected_zone:state.selectedZone,interventions:currentInterventions().map(x=>x.id)},summary:aggregate(list),zones:list.map(z=>({id:z.id,name:z.name,population:z.population,vulnerability_index:z.vulnerability,baseline_access_score:z.access,risk_score:Math.round(z.risk),estimated_exposure:z.exposed,clinics:z.clinics,water_points:z.water,heat_factor:z.heat,rain_factor:z.rain,power_factor:z.power})),model:{type:'deterministic heuristic scenario model',validated:false,uses_live_data:false,intervention_effects:'Illustrative coefficients; not empirically validated'}};
+    const payload={project:'NagarTwin — Future Scenario Engine',version:'0.1.0',exported_at:new Date().toISOString(),data_status:'SYNTHETIC_DEMO_ONLY',warning:'Illustrative model outputs only. Not a real-world forecast or emergency planning instruction.',run_number:state.runCount,simulated_at:state.lastRun,inputs:{scenario:state.scenario,scenario_name:scenarioInfo[state.scenario].title,intensity:state.intensity,intensity_label:intensityLabel(state.intensity),focus_area:state.focusArea,selected_zone:state.selectedZone,interventions:currentInterventions().map(x=>x.id)},summary:aggregate(list),zones:list.map(z=>({id:z.id,name:z.name,population:z.population,vulnerability_index:z.vulnerability,baseline_access_score:(zones.find(base=>base.id===z.id)||z).access,modelled_service_access_score:Math.round(z.access),risk_score:Math.round(z.risk),estimated_exposure:z.exposed,clinics:z.clinics,water_points:z.water,heat_factor:z.heat,rain_factor:z.rain,power_factor:z.power})),model:{type:'deterministic heuristic scenario model',validated:false,uses_live_data:false,intervention_effects:'Illustrative coefficients; not empirically validated'}};
     download('nagartwin-scenario-'+state.scenario+'-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(payload,null,2),'application/json');toast('Scenario report exported as JSON.');
   }
   function exportCsv(){
