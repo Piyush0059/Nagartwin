@@ -1,5 +1,8 @@
 # NagarTwin — Future Scenario Engine
 
+**Live demo:** https://piyush0059.github.io/Nagartwin/  
+**Repository:** https://github.com/Piyush0059/Nagartwin
+
 A static, browser-only prototype for exploring how hypothetical heatwaves, heavy rainfall, and power outages could affect access to essential public services across a fictional city. It lets people compare a no-intervention scenario with a selected response package.
 
 > **Important:** The app uses synthetic sample data and deterministic heuristic formulas. It is not a live forecast, validated risk model, official emergency tool, or substitute for local authorities. Do not use the demo outputs for real emergency or infrastructure decisions.
@@ -65,13 +68,34 @@ These coefficients are arbitrary teaching assumptions, not calibrated from real 
 - Measure calibration, uncertainty, error by area, robustness to missing data, and intervention sensitivity.
 - Only describe outputs as forecasts if a model has been trained/validated for that task and appropriate experts have reviewed it.
 
+## Known limitations
+
+- No real city boundaries, coordinates, road network, routing engine, elevation, drainage, weather, grid, hospital-status or water-availability data.
+- No model calibration against observed incidents.
+- No uncertainty interval or probabilistic interpretation.
+- Exposure is not equivalent to illness, injury, people needing rescue, or confirmed disruption.
+- Composite service-access score is a demo index and is not a validated accessibility measure.
+- Intervention impacts are assumed; they are not causally established.
+- City-wide averages can hide unequal outcomes; equity and distributional effects need a more rigorous model.
+- The schematic zone grid is not a map.
+
+## Minimum requirements before a real pilot
+
+1. Choose one city and one clearly defined public-service question.
+2. Source authoritative geospatial, weather/hazard, and facility datasets; document license, date, coverage, quality, and missingness.
+3. Define a real outcome measure with local experts (e.g. travel time to an operational clinic under a specific road-closure scenario).
+4. Compare to historical events or ground-truth observations and publish error analysis.
+5. Measure impacts by area and relevant vulnerable populations while protecting privacy.
+6. Have emergency-management, urban-planning, accessibility and community stakeholders review assumptions.
+7. Clearly separate observed data, modeled estimates, and recommendations in every interface and export.
+
 ## Tech stack
 
 Plain HTML, CSS, and JavaScript. No build tools are required. The current prototype is intentionally static and suitable for GitHub Pages.
 
 ## Project status
 
-`v0.1.0` — interactive scenario prototype using synthetic values. No real city data, GIS layers, live feeds, or validated prediction models are connected.
+`v0.1.1` — interactive scenario prototype using synthetic values. Reset state and JSON export labeling have been corrected. No real city data, GIS layers, live feeds, or validated prediction models are connected.
 
 ## License
 
