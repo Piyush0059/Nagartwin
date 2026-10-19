@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0d1726">
-<meta name="description" content="NagarTwin is a transparent urban future-scenario simulator for public-service access and emergency planning.">
-<title>NagarTwin — Future Scenario Engine</title>
+<meta name="description" content="NagarTwin is a transparent public-welfare scenario lab comparing hypothetical heat, rainfall, and power disruptions. Real Patna reference data is kept separate from synthetic simulation scores.">
+<title>NagarTwin — Public-Welfare Scenario Lab</title>
 <style>
 :root {
   --site-primary: #8de0cf;
@@ -183,8 +183,44 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
 .toast { position:fixed; bottom:20px; left:50%; transform:translate(-50%,20px); opacity:0; pointer-events:none; transition:.2s; background:#e0fff4; color:#12332b; border-radius:12px; box-shadow:var(--shadow); padding:12px 16px; z-index:99; font-size:12px; font-weight:800; max-width:calc(100vw - 30px); }
 .toast.show { opacity:1; transform:translate(-50%,0); }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.context-shell { border:1px solid var(--line); border-radius:calc(17px * var(--site-radius-scale)); padding:16px; background:linear-gradient(145deg,rgba(141,224,207,.035),rgba(131,185,255,.025)); }
+.context-banner { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:13px; }
+.context-banner-bottom { margin:14px 0 0; }
+.context-banner-text { color:var(--muted); font-size:10px; line-height:1.6; }
+.context-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-bottom:14px; }
+.context-metric { display:flex; flex-direction:column; gap:7px; min-width:0; border:1px solid var(--line); border-radius:13px; padding:14px; background:var(--panel); }
+.context-metric>span { font-size:10px; font-weight:750; color:var(--muted); }
+.context-metric strong { font-size:clamp(22px,2.5vw,30px); letter-spacing:-.05em; line-height:1.1; overflow-wrap:anywhere; }
+.context-metric small { color:var(--muted); font-size:9px; line-height:1.5; }
+.context-metric a,.source-links a,.data-source-card a { color:var(--mint); font-size:10px; text-decoration:none; font-weight:750; margin-top:auto; }
+.weather-panel { border:1px solid var(--line); background:var(--panel); border-radius:15px; padding:16px; }
+.weather-header { display:flex; justify-content:space-between; align-items:flex-start; gap:15px; margin-bottom:10px; }
+.weather-header h3 { font-size:15px; margin:5px 0; letter-spacing:-.03em; }
+.weather-header p { font-size:10px; color:var(--muted); margin:0; max-width:690px; line-height:1.6; }
+.weather-status { font-size:10px; color:var(--muted); padding:9px 0; }
+.weather-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; }
+.weather-stat { border:1px solid var(--line); border-radius:11px; padding:11px; background:var(--panel-2); min-width:0; }
+.weather-stat span { display:block; color:var(--muted); font-size:9px; line-height:1.35; }
+.weather-stat strong { display:block; font-size:23px; margin:5px 0 2px; letter-spacing:-.05em; overflow-wrap:anywhere; }
+.weather-stat small { display:block; color:var(--muted); font-size:8px; line-height:1.4; }
+.forecast-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-top:10px; }
+.forecast-card { border:1px solid var(--line); border-radius:11px; padding:11px; background:var(--panel-2); }
+.forecast-card strong { display:block; font-size:11px; margin-bottom:6px; }
+.forecast-card span { display:block; font-size:10px; color:var(--muted); line-height:1.7; }
+.source-links { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:11px; }
+.data-source-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:13px; }
+.data-source-card { display:flex; flex-direction:column; align-items:flex-start; border:1px solid var(--line); border-radius:14px; padding:16px; background:var(--panel); min-width:0; }
+.source-type { color:var(--mint); font-size:9px; font-weight:850; letter-spacing:.08em; line-height:1.5; }
+.data-source-card h3 { font-size:13px; margin:9px 0 6px; }
+.data-source-card p { font-size:10px; color:var(--muted); line-height:1.7; margin:0 0 13px; }
+.data-source-card a { margin-top:auto; }
+.formula-panel { background:var(--panel); }
+.formula-row { border-top:1px solid var(--line); padding:11px 0; display:grid; grid-template-columns:175px minmax(0,1fr); gap:14px; align-items:start; }
+.formula-row strong { font-size:10px; }
+.formula-row code { color:var(--muted); background:var(--panel-2); border:1px solid var(--line); padding:9px; border-radius:8px; white-space:normal; overflow-wrap:anywhere; font-size:10px; line-height:1.6; }
 @media (max-width: 1000px) { .hero { grid-template-columns:1fr; gap:22px; }.hero-note { max-width:650px; }.lab-grid { grid-template-columns:280px minmax(0,1fr); }.metric-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.visual-grid { grid-template-columns:1fr; } }
-@media (max-width: 700px) { .container { width:calc(100% - 28px); }.topbar { min-height:70px; flex-wrap:wrap; padding:12px 0; }.nav { display:none; }.top-right .badge { display:none; }.top-right .btn { padding:8px 10px; font-size:10px; }.brand { min-width:0; }.hero { padding:35px 0 22px; }.hero p { font-size:13px; }.hero-note { padding:15px; }.lab-head { align-items:flex-start; flex-direction:column; }.lab-head-right { text-align:left; }.lab-grid { grid-template-columns:1fr; }.scenario-options { grid-template-columns:repeat(3,minmax(0,1fr)); }.scenario-option { display:block; padding:9px 7px; }.scenario-emoji { margin-bottom:6px; }.scenario-option small { font-size:8px; }.panel-pad { padding:14px; }.city-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }.zone { min-height:94px; padding:8px; }.zone-name { font-size:10px; }.zone-risk { font-size:18px; }.recommendations,.info-cards { grid-template-columns:1fr; }.info-heading { grid-template-columns:1fr; gap:6px; }.info-section { padding-top:45px; }.assumption-layout { grid-template-columns:1fr; }.footer { flex-direction:column; }.chart-row { grid-template-columns:78px minmax(0,1fr) 30px; }.micro-stat strong { font-size:16px; } }
+@media (max-width: 700px) { .container { width:calc(100% - 28px); }
+.context-shell { padding:11px; }.context-grid,.data-source-grid { grid-template-columns:1fr; }.weather-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.weather-grid .weather-stat:last-child { grid-column:1 / -1; }.weather-header { flex-direction:column; }.weather-header .btn { width:100%; }.forecast-grid { grid-template-columns:1fr; }.formula-row { grid-template-columns:1fr; gap:7px; }.topbar { min-height:70px; flex-wrap:wrap; padding:12px 0; }.nav { display:none; }.top-right .badge { display:none; }.top-right .btn { padding:8px 10px; font-size:10px; }.brand { min-width:0; }.hero { padding:35px 0 22px; }.hero p { font-size:13px; }.hero-note { padding:15px; }.lab-head { align-items:flex-start; flex-direction:column; }.lab-head-right { text-align:left; }.lab-grid { grid-template-columns:1fr; }.scenario-options { grid-template-columns:repeat(3,minmax(0,1fr)); }.scenario-option { display:block; padding:9px 7px; }.scenario-emoji { margin-bottom:6px; }.scenario-option small { font-size:8px; }.panel-pad { padding:14px; }.city-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }.zone { min-height:94px; padding:8px; }.zone-name { font-size:10px; }.zone-risk { font-size:18px; }.recommendations,.info-cards { grid-template-columns:1fr; }.info-heading { grid-template-columns:1fr; gap:6px; }.info-section { padding-top:45px; }.assumption-layout { grid-template-columns:1fr; }.footer { flex-direction:column; }.chart-row { grid-template-columns:78px minmax(0,1fr) 30px; }.micro-stat strong { font-size:16px; } }
 @media (max-width: 390px) { .scenario-options { grid-template-columns:1fr; }.scenario-option { display:flex; }.scenario-emoji { margin-bottom:0; }.city-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.metric { padding:11px; }.metric-label { font-size:8px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto!important; transition-duration:.001ms!important; animation-duration:.001ms!important; } }
 </style>
@@ -196,7 +232,7 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
       <span class="brand-icon">N↗</span>
       <span><span class="brand-title">NagarTwin</span><span class="brand-sub">Future Scenario Engine</span></span>
     </a>
-    <nav class="nav" aria-label="Main navigation"><a href="#lab">Scenario lab</a><a href="#how">How it works</a><a href="#method">Model & limits</a></nav>
+    <nav class="nav" aria-label="Main navigation"><a href="#why">Why NagarTwin</a><a href="#data">Public data</a><a href="#lab">Scenario lab</a><a href="#how">How it works</a><a href="#method">Model & limits</a></nav>
     <div class="top-right"><span class="badge"><span class="dot"></span>SYNTHETIC DEMO DATA</span><button class="btn primary" id="exportTop">Export scenario ↗</button></div>
   </header>
 
@@ -205,7 +241,7 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
       <div>
         <div class="eyebrow">Public welfare · Urban resilience · Decision support</div>
         <h1>Test tomorrow's crisis.<br><span>Before it happens.</span></h1>
-        <p>NagarTwin is a public-welfare simulation lab. Explore how heatwaves, heavy rainfall or power outages could affect access to essential services—and compare possible interventions before resources are committed.</p>
+        <p>NagarTwin is a transparent public-welfare planning sandbox. Explore how hypothetical heatwaves, heavy rainfall or power outages could disrupt access to essential services, then compare possible responses before resources are committed. Real-world context is labelled separately; the scenario engine remains an explicitly synthetic model.</p>
         <div class="hero-actions"><a class="btn primary" href="#lab" style="text-decoration:none">Open scenario lab ↓</a><button class="btn ghost" id="resetHero">Reset to baseline</button></div>
       </div>
       <aside class="hero-note" aria-label="What this prototype does">
@@ -217,10 +253,41 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
       </aside>
     </section>
 
+    <section class="container" id="data">
+      <div class="lab-head">
+        <div><div class="section-kicker">Real-world reference layer</div><h2 class="section-title">Start with evidence. Keep simulation honest.</h2><p class="section-intro">NagarTwin separates public reference data for Patna from the fictional 12-zone simulation. These references explain the pilot context but do not change synthetic risk scores.</p></div>
+        <div class="lab-head-right">REFERENCE AREA: PATNA DISTRICT, BIHAR<br>SIMULATION SCORES: SYNTHETIC ONLY</div>
+      </div>
+      <div class="context-shell">
+        <div class="context-banner"><span class="tag green">PUBLIC SOURCE DATA</span><span class="context-banner-text">Reference facts have source links and dates; they are not ward-level measurements.</span></div>
+        <div class="context-grid">
+          <article class="context-metric"><span>Patna district population</span><strong>5,838,465</strong><small>Census of India 2011 · district total, not a current city count</small><a href="https://patna.nic.in/demography/" target="_blank" rel="noopener">District source ↗</a></article>
+          <article class="context-metric"><span>District area</span><strong>3,202 km²</strong><small>Published on the Patna district administration profile</small><a href="https://patna.nic.in/demography/" target="_blank" rel="noopener">District source ↗</a></article>
+          <article class="context-metric"><span>Urban share of district population</span><strong>43.07%</strong><small>Census 2011 · remaining 56.93% rural; historical statistic</small><a href="https://www.censusindia.gov.in/nada/index.php/catalog/298/download/842/DH_2011_1028_PART_A_DCHB_PATNA.pdf" target="_blank" rel="noopener">Official Census handbook ↗</a></article>
+        </div>
+        <section class="weather-panel" aria-labelledby="weatherHeading">
+          <div class="weather-header"><div><div class="section-kicker">Live external context</div><h3 id="weatherHeading">Weather model near Patna</h3><p>Current model estimates and a 3-day outlook at the district portal's reference coordinate, 25.35° N, 85.12° E.</p></div><button class="btn small" id="refreshWeather" type="button">↻ Refresh data</button></div>
+          <div class="weather-status" id="weatherStatus" role="status" aria-live="polite">Requesting weather model data…</div>
+          <div class="weather-grid" id="weatherCurrent">
+            <div class="weather-stat"><span>Temperature</span><strong>—</strong><small>°C</small></div><div class="weather-stat"><span>Feels like</span><strong>—</strong><small>°C</small></div><div class="weather-stat"><span>Humidity</span><strong>—</strong><small>% relative humidity</small></div><div class="weather-stat"><span>Precipitation</span><strong>—</strong><small>mm at model time</small></div><div class="weather-stat"><span>Wind speed</span><strong>—</strong><small>km/h</small></div>
+          </div>
+          <div class="forecast-grid" id="weatherForecast"></div>
+          <p class="tiny-disclaimer">Source: Open-Meteo forecast API. “Current” values are weather-model estimates, not a ground-station measurement or an official warning. This feed is displayed for context only and does not affect simulation scores. For official warnings, check the India Meteorological Department.</p>
+          <div class="source-links"><a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener">Open-Meteo API documentation ↗</a><a href="https://open-meteo.com/en/features#terms" target="_blank" rel="noopener">Data/API terms ↗</a><a href="https://mausam.imd.gov.in/" target="_blank" rel="noopener">Official IMD weather warnings ↗</a></div>
+        </section>
+        <div class="context-banner context-banner-bottom"><span class="tag yellow">IMPORTANT BOUNDARY</span><span class="context-banner-text">Public reference facts and weather estimates do not calibrate the 12 fictional zones. No Patna ward, road, clinic, water point or power-grid risk is predicted.</span></div>
+      </div>
+      <div class="data-source-grid">
+        <article class="data-source-card"><span class="source-type">GOVERNMENT · DEMOGRAPHY</span><h3>Patna District Administration</h3><p>Provides the 2011 district population and published area/profile information. Census values are historical and district-wide; they must not be presented as current ward-level population.</p><a href="https://patna.nic.in/demography/" target="_blank" rel="noopener">Open district profile ↗</a></article>
+        <article class="data-source-card"><span class="source-type">GOVERNMENT · CENSUS</span><h3>Census of India 2011</h3><p>The District Census Handbook documents district and urban/rural context. It is suitable for background and planning, not as a current real-time exposure dataset.</p><a href="https://www.censusindia.gov.in/nada/index.php/catalog/298/download/842/DH_2011_1028_PART_A_DCHB_PATNA.pdf" target="_blank" rel="noopener">Open handbook PDF ↗</a></article>
+        <article class="data-source-card"><span class="source-type">GOVERNMENT · PLANNING</span><h3>Patna Master Plan</h3><p>The Patna Metropolitan Area Authority lists a Patna Master Plan download dated 24 June 2026. It is linked as a planning reference; its GIS layers are not yet imported into this prototype.</p><a href="https://pmaa.bihar.gov.in/hi/patna_master_plan" target="_blank" rel="noopener">Open official master-plan page ↗</a></article>
+      </div>
+    </section>
+
     <section class="container" id="lab">
       <div class="lab-head">
-        <div><div class="section-kicker">Interactive prototype / v0.1</div><h2 class="section-title">Future Scenario Lab</h2><p class="section-intro">Explore a controlled, fictional city model. All values are illustrative—not live measurements, official warnings or predictions.</p></div>
-        <div class="lab-head-right">MODEL CITY: CIVITAS-12<br>DATA MODE: SYNTHETIC · NO LIVE FEEDS</div>
+        <div><div class="section-kicker">Interactive prototype / v0.2.0</div><h2 class="section-title">Future Scenario Lab</h2><p class="section-intro">Explore a controlled fictional city model. The Patna reference layer above is real-world context only; each zone profile and scenario score below remains illustrative, not a measurement, official warning or prediction.</p></div>
+        <div class="lab-head-right">SIMULATION: CIVITAS-12 · SYNTHETIC<br>CONTEXT: PATNA PUBLIC REFERENCES</div>
       </div>
 
       <div class="lab-grid">
@@ -234,9 +301,10 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
           </div>
           <label class="field-label" for="areaSelect">Focus area</label>
           <select class="control-select" id="areaSelect"><option value="all">All 12 zones</option></select>
-          <div class="field-label"><div class="severity-row"><span>Event intensity</span><output class="severity-value" id="intensityValue" for="intensity">60 / 100 · High</output></div></div>
-          <input id="intensity" type="range" min="10" max="100" value="60" step="5" aria-label="Event intensity from 10 to 100">
+          <div class="field-label"><div class="severity-row"><span>Event intensity (abstract)</span><output class="severity-value" id="intensityValue" for="intensity">60 / 100 · High</output></div></div>
+          <input id="intensity" type="range" min="10" max="100" value="60" step="5" aria-label="Abstract scenario intensity from 10 to 100">
           <div class="range-labels"><span>10 · Low</span><span>55 · Elevated</span><span>100 · Extreme</span></div>
+          <p class="tiny-disclaimer">This 0–100 dial is not temperature in °C, rainfall in mm, outage duration, or an official severity category.</p>
           <span class="field-label">Test interventions</span>
           <div class="check-list" id="interventions"></div>
           <div class="control-foot"><button class="btn primary" id="runBtn">Run scenario simulation ↗</button><button class="btn" id="clearActions">Clear interventions</button></div>
@@ -246,9 +314,9 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
         <div class="results-area" aria-live="polite">
           <div class="metric-grid" id="metrics">
             <div class="metric"><div class="metric-label">Population in model <span>◎</span></div><div class="metric-value">—</div><div class="metric-foot">Fictional population</div></div>
-            <div class="metric"><div class="metric-label">Estimated exposure <span>△</span></div><div class="metric-value">—</div><div class="metric-foot">Modelled people at risk</div></div>
+            <div class="metric"><div class="metric-label">Exposure proxy <span>△</span></div><div class="metric-value">—</div><div class="metric-foot">Synthetic index; not an actual headcount</div></div>
             <div class="metric"><div class="metric-label">Service access <span>⌖</span></div><div class="metric-value">—</div><div class="metric-foot">Composite score / 100</div></div>
-            <div class="metric"><div class="metric-label">High-risk zones <span>!</span></div><div class="metric-value">—</div><div class="metric-foot">Risk score ≥ 65</div></div>
+            <div class="metric"><div class="metric-label">High-risk zones <span>!</span></div><div class="metric-value">—</div><div class="metric-foot">Demo threshold ≥65; not official</div></div>
           </div>
 
           <div class="visual-grid">
@@ -260,7 +328,7 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
             </section>
             <section class="panel panel-pad">
               <div class="panel-title-row"><div><h3 id="selectedTitle">Selected zone: Central</h3><p id="selectedSub">Synthetic neighbourhood profile</p></div><span class="tag" id="selectedRiskTag">RISK —</span></div>
-              <div class="insight"><h4 id="insightHeadline">Run a scenario to explore impacts</h4><p id="insightText">Select an event and run the model to see how assumed exposure and essential-service access change.</p><div class="insight-grid"><div class="insight-box"><span>Modeled access score</span><strong id="zoneAccess">—</strong></div><div class="insight-box"><span>Estimated exposure</span><strong id="zoneExposed">—</strong></div><div class="insight-box"><span>Clinics in zone</span><strong id="zoneClinics">—</strong></div><div class="insight-box"><span>Water points</span><strong id="zoneWater">—</strong></div></div></div>
+              <div class="insight"><h4 id="insightHeadline">Run a scenario to explore impacts</h4><p id="insightText">Select an event and run the model to see how assumed exposure and essential-service access change.</p><div class="insight-grid"><div class="insight-box"><span>Modeled access score</span><strong id="zoneAccess">—</strong></div><div class="insight-box"><span>Synthetic exposure proxy</span><strong id="zoneExposed">—</strong></div><div class="insight-box"><span>Clinics in fictional zone</span><strong id="zoneClinics">—</strong></div><div class="insight-box"><span>Water points in fictional zone</span><strong id="zoneWater">—</strong></div></div></div>
               <div class="section-kicker" style="margin-top:16px">Priority watchlist</div>
               <div class="priority-list" id="priorityList"></div>
             </section>
@@ -274,12 +342,22 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
         </div>
       </div>
 
-      <div class="section-head" style="display:flex;align-items:flex-end;justify-content:space-between;gap:15px;margin:24px 0 13px"><div><div class="section-kicker">Suggested responses</div><h2 class="section-title">Action insights</h2><p class="section-intro">Generated from the model's assumptions and selected scenario—not official operational instructions.</p></div><button class="btn small" id="exportCsv">Download zone data CSV</button></div>
+      <div class="section-head" style="display:flex;align-items:flex-end;justify-content:space-between;gap:15px;margin:24px 0 13px"><div><div class="section-kicker">Suggested responses</div><h2 class="section-title">Action insights</h2><p class="section-intro">Generated from the model's assumptions and selected scenario—not official operational instructions. These are discussion prompts, not instructions to deploy resources.</p></div><button class="btn small" id="exportCsv">Download zone data CSV</button></div>
       <div class="recommendations" id="recommendations"></div>
     </section>
 
+    <section class="container info-section" id="why">
+      <div class="info-heading"><div><div class="section-kicker">Why this project exists</div><h2>Make preparedness choices easier to question.</h2></div><div><p>During heatwaves, heavy rain and outages, local services can be strained at the same time that people need them most. Public teams often have to weigh trade-offs: where to add temporary support, which services need backup first, and which communities may be left with less access. NagarTwin makes those assumptions visible and lets people compare hypothetical options before treating an output as a recommendation.</p><p><strong>Public-welfare objective:</strong> support transparent discussion about service access, preparedness and resource allocation, especially for communities facing higher barriers. It is a learning and research tool—not an emergency operations system.</p></div></div>
+      <div class="info-cards">
+        <article class="info-card"><span class="num">PUBLIC VALUE 01</span><h3>Compare options before acting</h3><p>Test a defined response package against a no-action baseline. Ask which assumptions make one option look better instead of treating one score as the answer.</p></article>
+        <article class="info-card"><span class="num">PUBLIC VALUE 02</span><h3>Make uncertainty visible</h3><p>Every simulated zone, coefficient and threshold is labelled as illustrative. Public data appears with its source and date instead of being silently mixed into made-up scores.</p></article>
+        <article class="info-card"><span class="num">PUBLIC VALUE 03</span><h3>Design for equitable access</h3><p>A future validated version should measure who benefits, who remains underserved, travel time to functioning services, and the impact of missing or outdated data—not just city-wide averages.</p></article>
+      </div>
+      <div class="callout" style="margin-top:13px"><strong>Intended users:</strong> students, civic researchers, urban-planning teams and community organisations discussing preparedness. <strong>Not intended for:</strong> real-time evacuation, medical decisions, dispatch, declaring a zone safe, or replacing official warnings.</div>
+    </section>
+
     <section class="container info-section" id="how">
-      <div class="info-heading"><div><div class="section-kicker">01 / System logic</div><h2>Simulate. Compare.<br>Explain the trade-off.</h2></div><div><p>NagarTwin is designed as a transparent decision-support tool, not an oracle. It estimates how a hypothetical event could change a neighbourhood's exposure and access to essential services. You can compare a no-action case against selected interventions and inspect the assumptions behind each score.</p><div class="tech-stack"><span class="tag">Scenario modelling</span><span class="tag">Risk scoring</span><span class="tag">Spatial planning concept</span><span class="tag">Equity-aware evaluation</span><span class="tag">GitHub Pages compatible</span></div></div></div>
+      <div class="info-heading"><div><div class="section-kicker">01 / System logic</div><h2>Simulate. Compare.<br>Explain the trade-off.</h2></div><div><p>NagarTwin is designed as a transparent decision-support tool, not an oracle. It estimates how a hypothetical event could change a neighbourhood's exposure and access to essential services. You can compare a no-action case against selected interventions and inspect the assumptions behind each score.</p><div class="tech-stack"><span class="tag">Scenario modelling</span><span class="tag">Risk scoring</span><span class="tag">Spatial planning concept</span><span class="tag">Equity evaluation roadmap</span><span class="tag">GitHub Pages compatible</span></div></div></div>
       <div class="info-cards">
         <article class="info-card"><span class="num">STEP 01</span><h3>Define an event</h3><p>Select heatwave, rainfall, or power outage and choose a controlled intensity value. This controls severity in the demo model; it is not tied to a real forecast.</p></article>
         <article class="info-card"><span class="num">STEP 02</span><h3>Model local impact</h3><p>Each synthetic zone has a population, vulnerability factor, baseline access score, essential-service counts, and scenario-specific exposure factors.</p></article>
@@ -293,10 +371,11 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
         <article class="panel panel-pad"><h3 style="font-size:13px;margin-bottom:10px">What the model uses</h3><ul class="assumption-list"><li>12 fictional zones with illustrative population estimates.</li><li>Scenario-specific baseline exposure factors (heat, rainfall, outage).</li><li>Vulnerability and essential-service availability indicators.</li><li>Event-intensity multiplier and explicit intervention deductions.</li><li>A composite 0–100 access score for comparison across runs.</li><li>Deterministic logic: same inputs yield the same outputs.</li></ul></article>
         <article class="panel panel-pad"><h3 style="font-size:13px;margin-bottom:10px">What it does not do</h3><ul class="assumption-list"><li>It does not use live weather, power-grid, road, clinic, or government feeds.</li><li>It does not calculate a real flood boundary or engineering-grade heat model.</li><li>It does not verify submitted community reports or use actual geospatial coordinates.</li><li>It does not provide emergency directions or guarantee a route is safe.</li><li>It does not prove causality, fairness, or predictive accuracy.</li><li>Real deployment needs validated local data, domain experts, and field evaluation.</li></ul></article>
       </div>
+      <div class="panel panel-pad formula-panel" style="margin-top:13px"><div class="section-kicker">Model logic in plain English</div><h3 style="font-size:14px;margin:7px 0">Where each score comes from</h3><p class="section-intro">The formulas make the demo repeatable, not scientifically validated. Values below are inputs to a teaching model only.</p><div class="formula-row"><strong>1 · Scenario risk</strong><code>exposure factor × intensity multiplier + vulnerability penalty + readiness penalty − intervention effects</code></div><div class="formula-row"><strong>2 · Service access</strong><code>baseline access − assumed event disruption + assumed intervention access bonus</code></div><div class="formula-row"><strong>3 · Exposure proxy</strong><code>fictional zone population × model risk fraction × vulnerability adjustment</code></div><p class="tiny-disclaimer">All factors and coefficients are arbitrary assumptions listed in <a href="https://github.com/Piyush0059/Nagartwin/blob/main/MODEL_ASSUMPTIONS.md" target="_blank" rel="noopener">MODEL_ASSUMPTIONS.md</a>. The real Patna census and weather context above are not used in these equations.</p></div>
       <div class="callout" style="margin-top:13px"><strong>Safety notice:</strong> NagarTwin is a research prototype for scenario exploration. Do not use its fictional outputs to make real emergency, medical, infrastructure, or evacuation decisions. Follow official local authorities and emergency services for live incidents.</div>
     </section>
   </main>
-  <footer class="container footer"><span><strong style="color:var(--text)">NagarTwin</strong> · Future Scenario Engine · v0.1.1</span><span>Prototype for public-welfare planning · Not affiliated with any government or university.</span><span><a href="#method" style="color:var(--mint);text-decoration:none">Method & limitations ↑</a></span></footer>
+  <footer class="container footer"><span><strong style="color:var(--text)">NagarTwin</strong> · Public-Welfare Scenario Lab · v0.2.0</span><span>Public reference context · Synthetic simulation · Not an official tool.</span><span><a href="#data" style="color:var(--mint);text-decoration:none">Data sources ↑</a> · <a href="#method" style="color:var(--mint);text-decoration:none">Method & limitations ↑</a></span></footer>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
@@ -305,7 +384,7 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
   const $ = (id) => document.getElementById(id);
   const state = { scenario: 'heat', intensity: 60, interventions: new Set(['cooling','water']), selectedZone: 'central', focusArea: 'all', results: null, runCount: 0, lastRun: null };
 
-  // All profiles are fictional. Replace only with appropriately sourced and documented local data.
+  // The scenario profiles are fictional. Patna context/weather data shown elsewhere is never used to calculate these scores.
   const zones = [
     {id:'north',name:'North Gate',population:18500,vulnerability:0.62,access:73,clinics:2,water:3,heat:66,rain:36,power:49,drainage:58,backup:42,road:72},
     {id:'riverside',name:'Riverside',population:22100,vulnerability:0.71,access:61,clinics:1,water:2,heat:61,rain:86,power:52,drainage:27,backup:38,road:51},
@@ -397,7 +476,7 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
     const totals=aggregate(results);
     const metrics=[
       {label:'Population in model',value:number(totals.population),foot:'Fictional zone population',tone:''},
-      {label:'Estimated exposure',value:number(totals.exposed),foot:'Modelled people exposed',tone:totals.exposed/totals.population>.23?'bad':totals.exposed/totals.population>.14?'warn':'good'},
+      {label:'Exposure proxy',value:number(totals.exposed),foot:'Synthetic index; not an actual headcount',tone:totals.exposed/totals.population>.23?'bad':totals.exposed/totals.population>.14?'warn':'good'},
       {label:'Service access',value:Math.round(totals.access)+'/100',foot:'Composite score · higher is better',tone:totals.access>=70?'good':totals.access>=50?'warn':'bad'},
       {label:'High-risk zones',value:totals.high,foot:'Risk score ≥ 65 / 100',tone:totals.high>=5?'bad':totals.high>=2?'warn':'good'}
     ];
@@ -421,7 +500,7 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
   }
   function renderPriority(results){
     const sorted=[...results].sort((a,b)=>b.risk-a.risk).slice(0,4);
-    $('priorityList').innerHTML=sorted.map((z,i)=>`<div class="priority-item"><span class="priority-rank">${i+1}</span><span><strong>${z.name}</strong><small>${number(z.exposed)} modelled people exposed</small></span><span class="priority-score">${Math.round(z.risk)}/100</span></div>`).join('');
+    $('priorityList').innerHTML=sorted.map((z,i)=>`<div class="priority-item"><span class="priority-rank">${i+1}</span><span><strong>${z.name}</strong><small>${number(z.exposed)} synthetic exposure proxy units</small></span><span class="priority-score">${Math.round(z.risk)}/100</span></div>`).join('');
   }
   function renderComparison(results){
     const base=selectedZones();
@@ -484,17 +563,57 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
   function reset(){state.scenario='heat';state.intensity=60;state.interventions=new Set(['cooling','water']);state.focusArea='all';state.selectedZone='central';$('intensity').value=60;$('areaSelect').value='all';setScenario('heat');$('areaSelect').value='all';state.focusArea='all';state.selectedZone='central';renderScenario();toast('Controls reset to the demo baseline.');}
   function exportJson(){
     const list=selectedZones().map(z=>computeZone(z,true));
-    const payload={project:'NagarTwin — Future Scenario Engine',version:'0.1.1',exported_at:new Date().toISOString(),data_status:'SYNTHETIC_DEMO_ONLY',warning:'Illustrative model outputs only. Not a real-world forecast or emergency planning instruction.',run_number:state.runCount,simulated_at:state.lastRun,inputs:{scenario:state.scenario,scenario_name:scenarioInfo[state.scenario].title,intensity:state.intensity,intensity_label:intensityLabel(state.intensity),focus_area:state.focusArea,selected_zone:state.selectedZone,interventions:currentInterventions().map(x=>x.id)},summary:aggregate(list),zones:list.map(z=>({id:z.id,name:z.name,population:z.population,vulnerability_index:z.vulnerability,baseline_access_score:(zones.find(base=>base.id===z.id)||z).access,modelled_service_access_score:Math.round(z.access),risk_score:Math.round(z.risk),estimated_exposure:z.exposed,clinics:z.clinics,water_points:z.water,heat_factor:z.heat,rain_factor:z.rain,power_factor:z.power})),model:{type:'deterministic heuristic scenario model',validated:false,uses_live_data:false,intervention_effects:'Illustrative coefficients; not empirically validated'}};
+    const payload={project:'NagarTwin — Public-Welfare Scenario Lab',version:'0.2.0',exported_at:new Date().toISOString(),data_status:'SYNTHETIC_DEMO_ONLY',warning:'Illustrative model outputs only. Not a real-world forecast or emergency planning instruction.',public_context:{reference_area:'Patna district, Bihar',census_population:5838465,census_year:2011,urban_share_percent:43.07,source:'https://patna.nic.in/demography/',context_used_in_scenario_scores:false},weather_context:{provider:'Open-Meteo',reference_coordinate:'25.35 N, 85.12 E',context_used_in_scenario_scores:false,note:'Forecast-model data are displayed separately and are not inputs to the synthetic scenario calculations.'},run_number:state.runCount,simulated_at:state.lastRun,inputs:{scenario:state.scenario,scenario_name:scenarioInfo[state.scenario].title,intensity:state.intensity,intensity_label:intensityLabel(state.intensity),focus_area:state.focusArea,selected_zone:state.selectedZone,interventions:currentInterventions().map(x=>x.id)},summary:aggregate(list),zones:list.map(z=>({id:z.id,name:z.name,population_synthetic:z.population,vulnerability_index_synthetic:z.vulnerability,baseline_access_score_synthetic:(zones.find(base=>base.id===z.id)||z).access,modelled_service_access_score:Math.round(z.access),risk_score_modelled:Math.round(z.risk),synthetic_exposure_proxy:z.exposed,clinics_synthetic:z.clinics,water_points_synthetic:z.water,heat_factor_synthetic:z.heat,rain_factor_synthetic:z.rain,power_factor_synthetic:z.power})),model:{type:'deterministic heuristic scenario model',validated:false,scenario_scores_use_live_data:false,intervention_effects:'Illustrative coefficients; not empirically validated'}};
     download('nagartwin-scenario-'+state.scenario+'-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(payload,null,2),'application/json');toast('Scenario report exported as JSON.');
   }
   function exportCsv(){
     const list=selectedZones().map(z=>computeZone(z,true));
-    const headers=['zone_id','zone_name','population_synthetic','vulnerability_index','scenario','intensity','risk_score_modelled','estimated_exposure_modelled','service_access_score_modelled','clinics_synthetic','water_points_synthetic'];
+    const headers=['zone_id','zone_name','population_synthetic','vulnerability_index_synthetic','scenario','intensity_abstract_0_to_100','risk_score_modelled_not_validated','synthetic_exposure_proxy_not_people_count','service_access_score_modelled_not_validated','clinics_synthetic','water_points_synthetic'];
     const rows=list.map(z=>[z.id,z.name,z.population,z.vulnerability,state.scenario,state.intensity,Math.round(z.risk),z.exposed,Math.round(z.access),z.clinics,z.water]);
     const csv=[headers,...rows].map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');
     download('nagartwin-zone-data-'+new Date().toISOString().slice(0,10)+'.csv',csv,'text/csv;charset=utf-8');toast('Zone table exported as CSV.');
   }
   function download(name,content,type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+  async function loadWeather(){
+    const status=$('weatherStatus');
+    const currentEl=$('weatherCurrent');
+    const forecastEl=$('weatherForecast');
+    status.textContent='Fetching Open-Meteo model data…';
+    const button=$('refreshWeather');
+    if(button)button.disabled=true;
+    const url='https://api.open-meteo.com/v1/forecast?latitude=25.35&longitude=85.12&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,wind_speed_10m&daily=temperature_2m_max,precipitation_sum,precipitation_probability_max&forecast_days=3&timezone=Asia%2FKolkata';
+    const fmt=(v,d=0)=>typeof v==='number'&&Number.isFinite(v)?v.toFixed(d):'—';
+    const stamp=t=>{if(!t)return 'timestamp unavailable';const dt=new Date(t);return Number.isNaN(dt.getTime())?t:dt.toLocaleString('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true});};
+    try{
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),12000);
+      let response;
+      try{response=await fetch(url,{signal:controller.signal,cache:'no-store'});}finally{clearTimeout(timer);}
+      if(!response.ok)throw new Error('Weather service returned HTTP '+response.status);
+      const data=await response.json();
+      if(!data.current||!data.daily)throw new Error('Weather response missing current or daily fields');
+      const c=data.current, units=data.current_units||{}, d=data.daily;
+      const stats=[
+        ['Temperature',fmt(c.temperature_2m,1),units.temperature_2m||'°C'],
+        ['Feels like',fmt(c.apparent_temperature,1),units.apparent_temperature||'°C'],
+        ['Humidity',fmt(c.relative_humidity_2m),units.relative_humidity_2m||'%'],
+        ['Precipitation',fmt(c.precipitation,1),units.precipitation||'mm at model time'],
+        ['Wind speed',fmt(c.wind_speed_10m,1),units.wind_speed_10m||'km/h']
+      ];
+      currentEl.innerHTML=stats.map(x=>'<div class="weather-stat"><span>'+x[0]+'</span><strong>'+x[1]+'</strong><small>'+x[2]+'</small></div>').join('');
+      const days=(d.time||[]).slice(0,3);
+      forecastEl.innerHTML=days.map((day,i)=>{
+        const dt=new Date(day+'T12:00:00+05:30');
+        const label=dt.toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata',weekday:'short',day:'numeric',month:'short'});
+        return '<article class="forecast-card"><strong>'+label+'</strong><span>Maximum temperature: <b>'+fmt((d.temperature_2m_max||[])[i],1)+' °C</b></span><span>Precipitation total: <b>'+fmt((d.precipitation_sum||[])[i],1)+' mm</b></span><span>Max precipitation probability: <b>'+fmt((d.precipitation_probability_max||[])[i])+'%</b></span></article>';
+      }).join('');
+      status.textContent='Updated from Open-Meteo forecast model: '+stamp(c.time)+' IST · reference point 25.35° N, 85.12° E. Model-estimated, not an official warning.';
+    }catch(error){
+      currentEl.innerHTML='<div class="weather-stat"><span>Weather context</span><strong>Unavailable</strong><small>External data could not be loaded. Simulation still works without it.</small></div>';
+      forecastEl.innerHTML='';
+      status.textContent='Live weather context could not be retrieved ('+(error&&error.name==='AbortError'?'request timed out':'network/API error')+'). Please retry later or use the official IMD link for warnings. No synthetic weather value is substituted.';
+    }finally{if(button)button.disabled=false;}
+  }
   function init(){
     $('areaSelect').innerHTML='<option value="all">All 12 zones</option>'+zones.map(z=>`<option value="${z.id}">${z.name}</option>`).join('');
     document.querySelectorAll('[data-scenario]').forEach(btn=>btn.addEventListener('click',()=>setScenario(btn.dataset.scenario)));
@@ -502,7 +621,7 @@ input[type="range"] { width:100%; margin:12px 0 4px; }
     $('areaSelect').addEventListener('change',e=>{state.focusArea=e.target.value;if(state.focusArea!=='all')state.selectedZone=state.focusArea;renderScenario();});
     $('runBtn').addEventListener('click',runScenario);$('exportTop').addEventListener('click',exportJson);$('exportCsv').addEventListener('click',exportCsv);$('resetHero').addEventListener('click',reset);
     $('clearActions').addEventListener('click',()=>{state.interventions.clear();renderInterventions();renderScenario();toast('All interventions cleared. Compare the no-action scenario.');});
-    renderInterventions();renderScenario();
+    renderInterventions();renderScenario();loadWeather();$('refreshWeather').addEventListener('click',loadWeather);
   }
   function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),3600);}
   init();
