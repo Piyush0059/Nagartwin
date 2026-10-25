@@ -21,6 +21,43 @@
 @media(max-width:720px){.portrait-cutout{height:min(100%,340px)}}
 @media(max-width:410px){.portrait-cutout{height:min(100%,305px)}}
 
+
+/* Exact passport-style framing: original white background, no surrounding interface */
+.hero-art.portrait-stage{
+  width:min(100%,200px);
+  max-width:200px;
+  height:auto;
+  aspect-ratio:1082 / 1454;
+  justify-self:end;
+  display:block;
+  border:2px solid #d7b15a;
+  border-radius:0;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:none;
+}
+.hero-art.portrait-stage:before,
+.hero-art.portrait-stage .ring,
+.hero-art.portrait-stage .core,
+.hero-art.portrait-stage .floatcard,
+.hero-art.portrait-stage .art-caption{
+  display:none!important;
+  content:none!important;
+}
+.passport-photo{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  position:static;
+  transform:none;
+  filter:none;
+  background:#fff;
+}
+@media(max-width:720px){
+  .hero-art.portrait-stage{width:min(100%,200px);justify-self:center;}
+}
 </style>
 </head>
 <body>
@@ -30,7 +67,7 @@
 <div class="app" id="app" hidden>
 <header class="header"><a class="brand" href="#top"><span class="brandmark">PK</span><span><b>PIYUSH</b><small>THE BUILD LOG</small></span></a><nav class="nav" aria-label="Main navigation"><a href="#projects">Work</a><a href="#story">The story</a><a href="#method">How I think</a><a href="#learning">Learning</a></nav><div class="header-right"><button class="search-open" id="searchOpen" type="button" aria-keyshortcuts="Control+K Meta+K"><span>⌕</span><span class="label">Quick jump</span><kbd>⌘ K</kbd></button><a class="contact-link" href="#contact">Let's talk <span>↗</span></a><button class="mobile-toggle" id="menuToggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button></div><nav class="mobile-nav" id="mobileNav" hidden><a href="#projects">Work</a><a href="#story">The story</a><a href="#method">How I think</a><a href="#learning">Learning</a><a href="#contact">Contact</a></nav></header>
 <main id="main">
-<section class="wrap hero" id="top"><div><div class="eyebrow"><i class="dot"></i> STUDENT DEVELOPER · PATNA, INDIA</div><h1>A better question<br>can build a <em>better system.</em></h1><p class="hero-lede">I'm Piyush Kumar. I build and study software prototypes around AI, multilingual communication, evidence-aware tools, and public-welfare problems—then question what they get wrong.</p><div class="hero-buttons"><a class="btn primary" href="#projects">Explore my work →</a><button class="btn secondary" id="playStory" type="button">▷ Play the story <span style="font-size:8px;color:#aaa">~30 SEC</span></button></div><div class="stats"><span><b>06</b> PROJECTS & PROTOTYPES</span><span><b>01</b> ACTIVE PUBLIC DEMO</span><span><b>∞</b> QUESTIONS LEFT</span></div></div><div class="hero-art portrait-stage" role="img" aria-label="Portrait of Piyush Kumar framed by black and gold artwork"><div class="ring"></div><div class="ring two"></div><img class="portrait-cutout" src="assets/piyush-portrait.webp" alt="Portrait of Piyush Kumar"><div class="core"><strong>PK</strong></div><div class="floatcard"><span>✳</span><span><b>Bloom</b><small>Human-centred AI</small></span></div><div class="floatcard"><span>≋</span><span><b>TruthTrace</b><small>Evidence, not vibes</small></span></div><div class="floatcard"><span>▦</span><span><b>NagarTwin</b><small>Public-welfare scenarios</small></span></div><div class="art-caption"><span>PORTRAIT / 01</span><span>PIYUSH KUMAR · INDIA</span></div></div><a class="scrollcue" href="#featured"><i></i> SCROLL TO EXPLORE</a></section>
+<section class="wrap hero" id="top"><div><div class="eyebrow"><i class="dot"></i> STUDENT DEVELOPER · PATNA, INDIA</div><h1>A better question<br>can build a <em>better system.</em></h1><p class="hero-lede">I'm Piyush Kumar. I build and study software prototypes around AI, multilingual communication, evidence-aware tools, and public-welfare problems—then question what they get wrong.</p><div class="hero-buttons"><a class="btn primary" href="#projects">Explore my work →</a><button class="btn secondary" id="playStory" type="button">▷ Play the story <span style="font-size:8px;color:#aaa">~30 SEC</span></button></div><div class="stats"><span><b>06</b> PROJECTS & PROTOTYPES</span><span><b>01</b> ACTIVE PUBLIC DEMO</span><span><b>∞</b> QUESTIONS LEFT</span></div></div><div class="hero-art portrait-stage"><img class="passport-photo" src="assets/piyush-passport.jpg" alt="Portrait of Piyush Kumar"></div><a class="scrollcue" href="#featured"><i></i> SCROLL TO EXPLORE</a></section>
 <div class="ticker"><div class="ticker-track"><span>BUILD WITH CURIOSITY</span><i>✳</i><span>TEST THE ASSUMPTIONS</span><i>✳</i><span>MAKE LIMITS VISIBLE</span><i>✳</i><span>BUILD WITH CURIOSITY</span><i>✳</i><span>TEST THE ASSUMPTIONS</span><i>✳</i><span>MAKE LIMITS VISIBLE</span></div></div>
 <section class="wrap section" id="featured"><div class="heading"><div><p class="eyebrow">01 — START HERE</p><h2>Choose an <em>episode.</em></h2></div><p class="note">Three projects reveal the questions I keep returning to: people, evidence, and real-world constraints.</p></div><div class="featured"><button class="feat" data-project="bloom" type="button"><span class="feat-kicker">01 / HUMAN-CENTRED AI</span><span class="visual"><span class="orb"></span></span><span class="feature-bottom"><span><b>Bloom</b><small>A supportive-conversation prototype, with human limits in view.</small></span><span class="round-arrow">↗</span></span></button><button class="feat" data-project="truthtrace" type="button"><span class="feat-kicker">02 / EVIDENCE & RETRIEVAL</span><span class="visual green"><span class="evidence-bars"><i></i><i></i><i></i><i></i></span></span><span class="feature-bottom"><span><b>TruthTrace</b><small>Inspect the passages behind an answer—not just the answer.</small></span><span class="round-arrow">↗</span></span></button><button class="feat" data-project="nagartwin" type="button"><span class="feat-kicker">03 / PUBLIC-WELFARE SCENARIOS</span><span class="visual purple"><span class="city"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span><span class="feature-bottom"><span><b>NagarTwin</b><small>Compare hypothetical responses and question the assumptions.</small></span><span class="round-arrow">↗</span></span></button></div></section>
 <section class="story" id="story"><div class="wrap story-grid"><aside class="story-aside"><p class="eyebrow">02 — THE PILOT</p><div class="stamp">A STORY<br>IN PROGRESS <span>✳</span></div><p class="aside-note">Not a story about having every answer. A story about learning how to ask better questions.</p></aside><div class="story-copy"><h2>It started with a person, not a product.</h2><p class="lead">A friend once described how lonely it could feel when nobody was immediately available to talk. I wanted to support her. Then a harder question followed: <em>could technology help someone feel heard without pretending to replace a human being?</em></p><p>That question became the starting point for Bloom. As I worked on it, the goal stopped being “make the app reply” and became “understand what a reply might mean, where it could fail, and when it should point someone toward human support.”</p><p>That shift now shapes the rest of my work. In TruthTrace, it becomes a question about evidence. In NagarTwin, it becomes a question about assumptions and public decisions. In my smaller apps, it becomes a question about whether a useful feature is dependable outside a demo.</p><blockquote>“A working feature is a milestone. Understanding its limits is part of finishing the job.”</blockquote><div class="signature"><span class="sigmark">P.</span><span><b>Piyush Kumar</b><small>Student developer · Curious by default</small></span></div></div></div></section>
