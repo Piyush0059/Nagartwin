@@ -2,7 +2,8 @@
 
 **Live demo:** https://piyush0059.github.io/Nagartwin/  
 **Repository:** https://github.com/Piyush0059/Nagartwin  
-**Release:** v0.2.0
+**Release:** v0.2.0  
+**Portfolio:** [Piyush Kumar — The Build Log](https://piyush0059.github.io/Nagartwin/portfolio/) · [Source files](portfolio/)
 
 NagarTwin is a transparent scenario-planning prototype for discussing how hypothetical heatwaves, heavy rainfall, and power outages may affect access to essential public services. The public-welfare goal is to help users compare response options, inspect assumptions, and question trade-offs before treating a scenario result as meaningful.
 
