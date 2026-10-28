@@ -1,5 +1,8 @@
 # Piyush Kumar — The Build Log
 
+**Live preview:** https://piyush0059.github.io/Nagartwin/portfolio/  
+**Portfolio source:** https://github.com/Piyush0059/Nagartwin/tree/main/portfolio
+
 A standalone static portfolio in `index.html`. The page uses inline CSS and JavaScript, so it needs no package installation, build process, external image assets, API key, or server.
 
 ## What is included
